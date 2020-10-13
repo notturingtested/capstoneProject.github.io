@@ -6,8 +6,11 @@
   <script type="text/javascript">
     var view;
 
-    
-    function render(spec) {
+//      .then(res => res.json())
+  //    .then(spec => render(spec))
+    //  .catch(err => console.error(err));
+
+    function render() {
       view = new vega.View(./spec.json, {
         renderer:  'canvas',  // renderer (canvas or svg)
         container: '#view',   // parent DOM container
