@@ -5,13 +5,14 @@
   <div id="view"></div>
   <script type="text/javascript">
     var view;
+     var reader = new FileReader(); 
+     reader.readAsText(spec.json);
 
-//      .then(res => res.json())
-      .then(spec => render())
-      .catch(err => console.error(err));
+    render(reader.result);
 
-    function render() {
-      view = new vega.View(vega.parse(./spec.json), {
+
+    function render(spec) {
+      view = new vega.View(vega.parse(spec), {
         renderer:  'canvas',  // renderer (canvas or svg)
         container: '#view',   // parent DOM container
         hover:     true       // enable hover processing
