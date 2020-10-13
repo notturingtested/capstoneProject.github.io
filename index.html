@@ -11,7 +11,7 @@
     //  .catch(err => console.error(err));
 
     function render() {
-      view = new vega.View(./spec.json, {
+      view = new vega.View(vega.parse(./spec.json), {
         renderer:  'canvas',  // renderer (canvas or svg)
         container: '#view',   // parent DOM container
         hover:     true       // enable hover processing
