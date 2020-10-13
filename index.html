@@ -8,7 +8,7 @@
 
 //      .then(res => res.json())
       .then(spec => render())
-    //  .catch(err => console.error(err));
+      .catch(err => console.error(err));
 
     function render() {
       view = new vega.View(vega.parse(./spec.json), {
