@@ -16,3 +16,8 @@ h1{
     height: 100%;
     width:100%;
 }
+
+#dataset {
+    color: black;
+    text-align: center;
+}
