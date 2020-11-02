@@ -1,5 +1,8 @@
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <title>Force Directed Graph</title>
@@ -8,7 +11,7 @@
   <h1>Force Directed Layout by Vega</h1>
   <div id="myChart">
     <!-- Drop-down -->
-    <label for="dataset">Choose a dataset:</label>
+    <label id="dataset" for="dataset">Choose a dataset:</label>
     <select id="dataset-selector" name="dataset-selector">
       <option value="">Please Select An Dataset</option>
       <option value="0">Graph</option>
@@ -16,7 +19,6 @@
       <option value="2">Scatter Plot</option>
       <option value="3">Map</option>
       <option value="4">Radial Tree</option>
-
     </select>
     <div id="view"></div>
   </div>
@@ -1068,7 +1070,6 @@
     select.addEventListener('change', function () {
       if (event.target.value == '0') {
         render(spec0);
-
       } else if (event.target.value == '1') {
         render(spec1);
       } else if (event.target.value == '2') {
