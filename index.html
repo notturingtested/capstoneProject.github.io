@@ -8,21 +8,22 @@
   <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.0.0/dist/fetch.umd.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<title>Force Directed Graph</title>
+<title>Data visualization by Vega</title>
 
 <body>
-  <h1>Force Directed Layout by Vega</h1>
+  <h1>Data Visualization by Vega</h1>
   <div id="myChart">
     <!-- Drop-down -->
     <label id="dataset" for="dataset">Choose a dataset:</label>
     <select id="dataset-selector" name="dataset-selector">
       <option value="">Please Select An Dataset</option>
-      <option value="0">Graph</option>
-      <option value="1">Chart</option>
+      <option value="0">Force Directed Graph</option>
+      <option value="1">Bar Chart</option>
       <option value="2">Scatter Plot</option>
-      <option value="3">Map</option>
+      <option value="3">Parallel Coordinates</option>
       <option value="4">Radial Tree</option>
     </select>
+    <br><br>
     <div id="view"></div>
   </div>
 
@@ -741,89 +742,261 @@
     }
     const spec3 = {
       "$schema": "https://vega.github.io/schema/vega/v5.json",
-      "description": "A choropleth map depicting U.S. unemployment rates by county in 2009.",
-      "width": 960,
-      "height": 500,
-      "autosize": "none",
+      "description": "Parallel coordinates plot showing 7 dimensions of automobile statistics.",
+      "width": 700,
+      "height": 400,
+      "padding": 5,
+
+      "config": {
+        "axisY": {
+          "titleX": -2,
+          "titleY": 410,
+          "titleAngle": 0,
+          "titleAlign": "right",
+          "titleBaseline": "top"
+        }
+      },
 
       "data": [{
-          "name": "unemp",
-          "url": "data/unemployment.tsv",
+          "name": "cars",
+          "url": "data/cars.json",
           "format": {
-            "type": "tsv",
-            "parse": "auto"
-          }
-        },
-        {
-          "name": "counties",
-          "url": "data/us-10m.json",
-          "format": {
-            "type": "topojson",
-            "feature": "counties"
+            "type": "json",
+            "parse": {
+              "Year": "date:%Y-%m-%d"
+            }
           },
           "transform": [{
-              "type": "lookup",
-              "from": "unemp",
-              "key": "id",
-              "fields": ["id"],
-              "values": ["rate"]
+              "type": "filter",
+              "expr": "datum.Horsepower && datum.Miles_per_Gallon"
             },
             {
-              "type": "filter",
-              "expr": "datum.rate != null"
+              "type": "formula",
+              "as": "Year",
+              "expr": "isNumber(datum.year) ? datum.year : year(datum.Year)"
             }
+          ]
+        },
+        {
+          "name": "fields",
+          "values": [
+            "Cylinders",
+            "Displacement",
+            "Weight_in_lbs",
+            "Horsepower",
+            "Acceleration",
+            "Miles_per_Gallon",
+            "Year"
           ]
         }
       ],
 
-      "projections": [{
-        "name": "projection",
-        "type": "albersUsa"
-      }],
-
       "scales": [{
-        "name": "color",
-        "type": "quantize",
-        "domain": [0, 0.15],
-        "range": {
-          "scheme": "blues",
-          "count": 7
-        }
-      }],
-
-      "legends": [{
-        "fill": "color",
-        "orient": "bottom-right",
-        "title": "Unemployment",
-        "format": "0.1%"
-      }],
-
-      "marks": [{
-        "type": "shape",
-        "from": {
-          "data": "counties"
-        },
-        "encode": {
-          "enter": {
-            "tooltip": {
-              "signal": "format(datum.rate, '0.1%')"
-            }
-          },
-          "update": {
-            "fill": {
-              "scale": "color",
-              "field": "rate"
-            }
-          },
-          "hover": {
-            "fill": {
-              "value": "red"
-            }
+          "name": "ord",
+          "type": "point",
+          "range": "width",
+          "round": true,
+          "domain": {
+            "data": "fields",
+            "field": "data"
           }
         },
-        "transform": [{
-          "type": "geoshape",
-          "projection": "projection"
+        {
+          "name": "Cylinders",
+          "type": "linear",
+          "range": "height",
+          "zero": false,
+          "nice": true,
+          "domain": {
+            "data": "cars",
+            "field": "Cylinders"
+          }
+        },
+        {
+          "name": "Displacement",
+          "type": "linear",
+          "range": "height",
+          "zero": false,
+          "nice": true,
+          "domain": {
+            "data": "cars",
+            "field": "Displacement"
+          }
+        },
+        {
+          "name": "Weight_in_lbs",
+          "type": "linear",
+          "range": "height",
+          "zero": false,
+          "nice": true,
+          "domain": {
+            "data": "cars",
+            "field": "Weight_in_lbs"
+          }
+        },
+        {
+          "name": "Horsepower",
+          "type": "linear",
+          "range": "height",
+          "zero": false,
+          "nice": true,
+          "domain": {
+            "data": "cars",
+            "field": "Horsepower"
+          }
+        },
+        {
+          "name": "Acceleration",
+          "type": "linear",
+          "range": "height",
+          "zero": false,
+          "nice": true,
+          "domain": {
+            "data": "cars",
+            "field": "Acceleration"
+          }
+        },
+        {
+          "name": "Miles_per_Gallon",
+          "type": "linear",
+          "range": "height",
+          "zero": false,
+          "nice": true,
+          "domain": {
+            "data": "cars",
+            "field": "Miles_per_Gallon"
+          }
+        },
+        {
+          "name": "Year",
+          "type": "linear",
+          "range": "height",
+          "zero": false,
+          "nice": true,
+          "domain": {
+            "data": "cars",
+            "field": "Year"
+          }
+        }
+      ],
+
+      "axes": [{
+          "orient": "left",
+          "zindex": 1,
+          "scale": "Cylinders",
+          "title": "Cylinders",
+          "offset": {
+            "scale": "ord",
+            "value": "Cylinders",
+            "mult": -1
+          }
+        },
+        {
+          "orient": "left",
+          "zindex": 1,
+          "scale": "Displacement",
+          "title": "Displacement",
+          "offset": {
+            "scale": "ord",
+            "value": "Displacement",
+            "mult": -1
+          }
+        },
+        {
+          "orient": "left",
+          "zindex": 1,
+          "scale": "Weight_in_lbs",
+          "title": "Weight_in_lbs",
+          "offset": {
+            "scale": "ord",
+            "value": "Weight_in_lbs",
+            "mult": -1
+          }
+        },
+        {
+          "orient": "left",
+          "zindex": 1,
+          "scale": "Horsepower",
+          "title": "Horsepower",
+          "offset": {
+            "scale": "ord",
+            "value": "Horsepower",
+            "mult": -1
+          }
+        },
+        {
+          "orient": "left",
+          "zindex": 1,
+          "scale": "Acceleration",
+          "title": "Acceleration",
+          "offset": {
+            "scale": "ord",
+            "value": "Acceleration",
+            "mult": -1
+          }
+        },
+        {
+          "orient": "left",
+          "zindex": 1,
+          "scale": "Miles_per_Gallon",
+          "title": "Miles_per_Gallon",
+          "offset": {
+            "scale": "ord",
+            "value": "Miles_per_Gallon",
+            "mult": -1
+          }
+        },
+        {
+          "orient": "left",
+          "zindex": 1,
+          "scale": "Year",
+          "title": "Year",
+          "format": "d",
+          "offset": {
+            "scale": "ord",
+            "value": "Year",
+            "mult": -1
+          }
+        }
+      ],
+
+      "marks": [{
+        "type": "group",
+        "from": {
+          "data": "cars"
+        },
+        "marks": [{
+          "type": "line",
+          "from": {
+            "data": "fields"
+          },
+          "encode": {
+            "enter": {
+              "x": {
+                "scale": "ord",
+                "field": "data"
+              },
+              "y": {
+                "scale": {
+                  "datum": "data"
+                },
+                "field": {
+                  "parent": {
+                    "datum": "data"
+                  }
+                }
+              },
+              "stroke": {
+                "value": "steelblue"
+              },
+              "strokeWidth": {
+                "value": 1.01
+              },
+              "strokeOpacity": {
+                "value": 0.3
+              }
+            }
+          }
         }]
       }]
     }
