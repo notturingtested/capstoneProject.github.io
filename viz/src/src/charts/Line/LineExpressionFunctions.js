@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 // Keep import below. 
 //import { d3, isNumeric } from '@analytics/core';
-import { d3, isNumberic } from './../../analytics/core';
+import { d3, isNumeric } from './../../analytics/core';
 
 import vegaL10n from './../vegaL10n/vegaL10n';
 import VizTooltip from './../VizTooltip';

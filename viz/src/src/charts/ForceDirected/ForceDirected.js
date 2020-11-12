@@ -1,12 +1,11 @@
 // TODO: Update the below imports using the @analytics syntax.
 // TODO: Remove the .js at the end of the files later on...
-import { _, MetricFormatter, isNumeric, moment, sleep } from './../../analytics/core.js';
-import guid from './../../analytics/guid.js';
-import guid from '@analytics/guid.js';
+import { _, MetricFormatter, isNumeric, moment, sleep } from './../../analytics/core';
+import guid from './../../analytics/guid';
 
-import ChartFactory from './../ChartFactory.js';
-import VegaViz from '../VegaViz.js';
-import vegaL10n from './../vegaL10n/vegaL10n.js';
+import ChartFactory from './../ChartFactory';
+import VegaViz from '../VegaViz';
+import vegaL10n from './../vegaL10n/vegaL10n';
 import ForceDirectedMarks from './ForceDirectedMarks';
 import ForceDirectedScales from './ForceDirectedScales';
 import ForceDirectedSignals from './ForceDirectedSignals';
@@ -19,7 +18,8 @@ import ForceDirectedSignals from './ForceDirectedSignals';
 //import LineVegaDataFormatter from './LineVegaDataFormatter';
 //import { getConstants } from './../VizConstants';
 
-//const { vega, vegaEmbed } = window;
+const { vega, vegaEmbed } = window;
+console.log(vega);
 /**
  * Parent class:
  * this.el - the current element storing the view.
