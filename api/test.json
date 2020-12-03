@@ -1,0 +1,35 @@
+{
+    "name": "FromAllPagesToPage",
+    "description": "",
+    "definition": {
+        "container": {
+            "func": "container",
+            "pred": {
+                "str": "Home",
+                "val": {
+                    "func": "attr",
+                    "name": "variables/page"
+                },
+                "func": "streq",
+                "description": "Page"
+            },
+            "context": "hits"
+        },
+        "func": "segment",
+        "version": [
+            1,
+            0,
+            0
+        ]
+    },
+    "internal": false,
+    "id": "s300000022_5fc94588706e9e44631e4fc5",
+    "owner": {
+        "id": 200364776
+    },
+    "migratedIds": [],
+    "isPostShardId": true,
+    "rsid": "a4t-test.geometrixxqc",
+    "tags": [],
+    "shares": []
+}
