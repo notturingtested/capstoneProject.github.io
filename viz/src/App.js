@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom'; 
-import logo from './logo.svg';
+import ReactDOM from 'react-dom';
 import './App.css';
 import VegaChartContainer from './src/charts/VegaChartContainer'; 
 import VegaDataFormatter from './src/charts/VegaDataFormatter'; 
@@ -11,23 +10,48 @@ window.vegaEmbed = embed;
 
 class App extends React.Component {
   constructor(props) {
-    super(props); 
+    super(props);
 
-    this._chartContainerRef = React.createRef();  
+    this._chartContainerRef = React.createRef();
 
     this.state = {
-      isVizPrepared: false,
-      data: []
+      isVizPrepped: false,
+      data: [],
+      endDate: "",
+      startDate: "",
+      APIToken: "",
+      name: ""
     }
+
+    this.setEnd = this.setEnd.bind(this);
+    this.setStart = this.setStart.bind(this);
+    this.setAPI = this.setAPI.bind(this);
+    this.setName = this.setName.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // Note: For now this will always re-render, even if the 
-    // information in data is the same (which is ok, since the 
+    // Note: For now this will always re-render when the data array updates, 
+    // even if the information in data is the same (which is ok, since the 
     // user wants to make a new request each time). 
     if (prevState.data !== this.state.data) {
       this._displayChart(); 
     }
+  }
+
+  setEnd(event) {
+    this.setState({endDate: event.target.value});
+  }
+
+  setStart(event) {
+    this.setState({startDate: event.target.value});
+  }
+
+  setAPI(event) {
+    this.setState({APIToken: event.target.value});
+  }
+
+  setName(event) {
+    this.setState({name: event.target.value});
   }
 
   //////////////////////////////////////////////////////////////// Start Mock Functions...
@@ -45,8 +69,6 @@ class App extends React.Component {
       rawDataSet.data.push({"Hello": "World!"})
       data.push(rawDataSet);
     }
-
-    return data; 
   }
 
   _buildHardCodedColors() {
@@ -68,9 +90,9 @@ class App extends React.Component {
   //////////////////////////////////////////////////////////////// End Mock Functions.  
 
   async _buildInitialVisualization() {
-    // Wait to import until vega has been downloaded.
+    // Wait to import until vega is accessible.
     await import('./src/charts/ForceDirected/ForceDirected');
-    this.setState({isVizPrepared: true});
+    this.setState({isVizPrepped: true});
   }
 
   _displayChart() {
@@ -1422,43 +1444,63 @@ class App extends React.Component {
     setTimeout(() => this.setState({data: data}), 500);
   }
 
-  render() { 
-    // Build hard coded colors. 
-    const colors = this._buildHardCodedColors();  
+  render() {
+    // Build hard coded colors.
+    const colors = this._buildHardCodedColors();
 
-    let mainCode; 
+    let mainCode;
 
-    if (!this.state.isVizPrepared) {
+    if (!this.state.isVizPrepped) {
       mainCode = (
         <button onClick={() => this._buildInitialVisualization()}>
-          Prepare initial visualization
-        </button> 
-      ); 
-    }
-    else {
+            Load visualization
+        </button>
+      );
+    } else {
       mainCode = (
         <div>
-          <VegaChartContainer 
-            ref={this._chartContainerRef} 
+          <VegaChartContainer
+            ref={this._chartContainerRef}
             colors={colors}
-            data={this.state.data} 
-            type='ForceDirected' 
+            data={this.state.data}
+            type='ForceDirected'
             opts={{isLegendEnabled: this._fakeIsLegendEnabled}}
-          /> 
-          <button 
-            onClick={() => this._makeApiRequest()} 
-          >
+          />
+          <form>
+            <label for="start">Start Date:</label>
+            <input type="date" id="start" name="start"
+                    value={this.state.startDate}
+                    onChange={this.setStart}
+                    min="2018-01-01" max="2021-12-31"/>
+            <br/>
+            <label for="end">End Date:</label>
+            <input type="date" id="end" name="end"
+                    value={this.state.endDate}
+                    onChange={this.setEnd}
+                    min="2018-01-01" max="2021-12-31"/>
+            <br/>
+            <label for="name">Company Name:</label>
+            <input type="text" id="name" name="name"
+                    value={this.state.name}
+                    onChange={this.setName}/>
+            <br/>
+            <label for="APIToken">API token:</label>
+            <input type="password" id="APIToken" name="APIToken"
+                    minLength="0" required value={this.state.APIToken} onChange={this.setAPI}/>
+            <br/>
+          </form>
+          <button onClick={() => this._makeApiRequest()}>
             Build Graph
           </button> 
           <div id="Viz-Display-Area"/>
-        </div>);
+      </div>);
     }
-  
+
     return (
       <div className="App">
         <h1>Force Directed Layout by Vega</h1>
         {mainCode}
-      </div> 
+      </div>
     );
   }
 }
