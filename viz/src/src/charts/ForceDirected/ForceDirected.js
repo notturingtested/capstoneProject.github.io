@@ -13,6 +13,8 @@ import ForceDirectedVegaFormatter from './ForceDirectedVegaDataFormatter';
 import { getConstants } from './../VizConstants';
 
 const { vega, vegaEmbed } = window;
+console.log("VEGA!!!");
+console.log(vega);
 /**
  * Parent class:
  * this.el - the current element storing the view.
@@ -98,10 +100,6 @@ export default class ForceDirected extends VegaViz {
 			this.el.appendChild(vegaContainer);
 		}
 
-    // TODO: DELETE THE CODE BELOW LATER ON (USED FOR TESTING). 
-    //this.el.appendChild(vegaContainer);
-    //const vegaView = await vegaEmbed(vegaContainer, spec5);
-
     // ADOBE: Handle localization here. 
   
 		const chartOptions = {
@@ -132,6 +130,9 @@ export default class ForceDirected extends VegaViz {
 		// it will also remove all children from vegaContainer beforehand (so it will remove the loading spinner we added)
     // see here: https://github.com/vega/vega-embed/blob/940c44c1051ae2138cf00e05e2a8b05c1ece25bd/src/embed.ts#L296
     console.log("About to call vega Embed!");
+    console.log("Data!!!"); 
+    console.log(opts.data); 
+    console.log(vegaSpec);
 		const vegaView = await vegaEmbed(vegaContainer, vegaSpec, embedOpts);
 
 		// because the vegaEmbed func is async, finalize any renders we cancelled above
@@ -206,7 +207,6 @@ export default class ForceDirected extends VegaViz {
 			signals: ForceDirectedSignals.create(opts),
 			marks: ForceDirectedMarks.create(opts),
 			scales: ForceDirectedScales.create(opts),
-			//axes: LineAxes.create(opts),
       config: {}
 		};
 

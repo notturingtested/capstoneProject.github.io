@@ -6,7 +6,7 @@
 }
 
 #Viz-Display-Area {
+  height: 60vh; 
+  width: 60vw; 
   margin-top: 100px;
-  width: 300px;
-  height: 300px;
 }

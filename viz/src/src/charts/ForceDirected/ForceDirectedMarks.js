@@ -9,7 +9,6 @@ export default class ForceDirectedMarks {
       "name": "nodes",
       "type": "symbol",
       "zindex": 1,
-
       "from": {
         "data": "node-data"
       },
