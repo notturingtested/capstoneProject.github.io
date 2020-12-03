@@ -1,7 +1,7 @@
 module.exports = class parser {
     constructor() { 
         this.simpleMap = new Map();
-        this.simpleMapTraffic = new Map();
+        this.allNodes = [];
         this.jsonObj = {
             nodes: [],
             links: []
@@ -9,16 +9,15 @@ module.exports = class parser {
     }
 
     parse(res) {
-        // console.log(res);
         // other is the sum of everything besides top 9
-        let other = res.summaryData.totals;
+        let other = res.summaryData.totals[0];
         // forEach through the data.rows to store nodes into JSON
         res.rows.forEach(element => {
             // remove the top 9 from total value
-            other = other - element.data[0];
+            other = other - element['data'];
             // set to the map for future use
             this.simpleMap.set(element.value, element.itemId);
-            this.simpleMapTraffic.set(element.value, element.data[0]);
+            this.allNodes.push(element.itemId);
             // store to JSON
             this.jsonObj.nodes.push({
                 name: element.value,
@@ -39,28 +38,25 @@ module.exports = class parser {
     }
 
     parseToJson(fromPage, data) {
-        // console.log(data);
         // toOther is the sum of everything besides top 9
-        let toOther = 0;
+        let toOther = data.summaryData.totals[0];
+        // forEach through the data.rows to store links into JSON
         data.rows.forEach(element => {
+            // remove the top 9 from total value
+            toOther = toOther - element.data[0];
             // store to JSON
             this.jsonObj.links.push({
-                source: parseInt(element.itemId),
-                target: parseInt(this.simpleMap.get(fromPage)),
+                source: parseInt(this.simpleMap.get(fromPage)),
+                target: parseInt(element.itemId),
                 value: parseInt(element.data[0])
             });
-            // calculate other
-            let old = this.simpleMapTraffic.get(fromPage);
-            this.simpleMapTraffic.set(fromPage, old - element.data[0]);
         });
-    }
-
-    setOther() {
-        for (const [key2, value2] of this.simpleMapTraffic.entries()) {
+        // store link to OTHER into JSON
+        if (toOther) {
             this.jsonObj.links.push({
-                source: parseInt(this.simpleMap.get(key2)),
+                source: parseInt(this.simpleMap.get(fromPage)),
                 target: -1,
-                value: value2
+                value: toOther
             });
         }
     }

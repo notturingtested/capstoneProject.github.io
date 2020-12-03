@@ -2,6 +2,7 @@ const fetch = require("node-fetch");
 
 exports.getRequest = getRequest
 exports.getSeqRequest = getSeqRequest
+exports.getToAllRequest = getToAllRequest
 
 async function getRequest(token, company, user, dateRange, dimension) {
     const res = await fetch("https://appservice5.omniture.com/analytics/1.0/reports?allowRemoteLoad=default&useCache=true&includeOberonXml=false&includePlatformPredictiveObjects=false", {

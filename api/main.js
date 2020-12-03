@@ -15,7 +15,7 @@ var temp_user = "tsaizhihao";
 
 
 
-getData(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension).then(data => console.log(data));
+getData(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension);
 // apiCaller.getSeqRequest(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension, "Home", "Home").then(data => console.log(data));
 
 async function getData(token, company, user, dateRange, dimension) {
@@ -26,14 +26,11 @@ async function getData(token, company, user, dateRange, dimension) {
     parser.parse(data)
     // for loop through to make individual request fromAllPagesToOnePage, *forEach doesn't work with async
     for (const [key, value] of parser.simpleMap.entries()) {
-        for (const [key2, value2] of parser.simpleMap.entries()) {
-            await apiCaller.getSeqRequest(token, company, user, dateRange, dimension, key, key2)
-                .then(res => {
-                    parser.parseToJson(key, res);
-                });        
-        }
+        await apiCaller.getToAllRequest(token, company, user, dateRange, dimension, key, parser.allNodes)
+            .then(res => {
+                parser.parseToJson(key, res);
+            });        
     }
-    await parser.setOther();
     console.log(parser.jsonObj);
     // convert js object to JSON
     return JSON.stringify(parser.jsonObj);
