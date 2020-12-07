@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './App.css';
 import VegaChartContainer from './src/charts/VegaChartContainer'; 
 import VegaDataFormatter from './src/charts/VegaDataFormatter'; 
-import embed from 'vega-embed'; 
+import embed from 'vega-embed';
+//const apiCaller = require('./../../api/app'); 
 var vega = require('vega'); 
 window.vega = vega; 
 window.vegaEmbed = embed;
@@ -17,16 +18,21 @@ class App extends React.Component {
     this.state = {
       isVizPrepped: false,
       data: [],
-      endDate: "",
       startDate: "",
+      endDate: "",
+      username: "",
+      companyName: "", 
       APIToken: "",
-      name: ""
+      errorMessage: "", 
+      dimension: "variables/page"
     }
 
     this.setEnd = this.setEnd.bind(this);
     this.setStart = this.setStart.bind(this);
     this.setAPI = this.setAPI.bind(this);
+    this.setCompanyName = this.setCompanyName.bind(this); 
     this.setName = this.setName.bind(this);
+    this.setDimension = this.setDimension.bind(this); 
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -49,9 +55,17 @@ class App extends React.Component {
   setAPI(event) {
     this.setState({APIToken: event.target.value});
   }
+  
+  setCompanyName(event) {
+    this.setState({companyName: event.target.value});
+  }
 
   setName(event) {
-    this.setState({name: event.target.value});
+    this.setState({username: event.target.value});
+  }
+
+  setDimension(event) {
+    this.setState({dimension: event.target.value}); 
   }
 
   //////////////////////////////////////////////////////////////// Start Mock Functions...
@@ -100,9 +114,20 @@ class App extends React.Component {
   }
 
   async _makeApiRequest() {
-    // TODO: API Team add your code here. If you can, have it follow 
-    // the structure of the hardcoded data below. Make sure to set 
-    // the state afterwards (as seen below). 
+    let missingFieldMessage = ""; 
+    
+    const allFields = this.state.startDate + this.state.endDate + this.state.username + this.state.companyName + this.state.APIToken + this.state.dimension;
+    console.log(allFields);
+
+    if (!this.state.startDate || !this.state.endDate || !this.state.username || 
+        !this.state.companyName || !this.state.APIToken) {
+          missingFieldMessage = "Please fill in all fields to build a new graph.";
+          this.setState({errorMessage: missingFieldMessage});
+          return; 
+    }
+
+    const dateRange = this.state.startDate + this.state.endDate; 
+    //apiCaller.getRequest(this.state.APIToken, this.state.companyName, this.state.username, dateRange, this.state.dimension); 
 
     const data = [{
       "name": "node-data",
@@ -1441,7 +1466,7 @@ class App extends React.Component {
     }]
   }]; 
 
-    setTimeout(() => this.setState({data: data}), 500);
+    setTimeout(() => this.setState({data: data, errorMessage: missingFieldMessage}), 500);
   }
 
   render() {
@@ -1467,31 +1492,47 @@ class App extends React.Component {
             opts={{isLegendEnabled: this._fakeIsLegendEnabled}}
           />
           <form>
-            <label for="start">Start Date:</label>
-            <input type="date" id="start" name="start"
-                    value={this.state.startDate}
-                    onChange={this.setStart}
-                    min="2018-01-01" max="2021-12-31"/>
+            <label>Start Date:
+              <input type="date" id="start" name="start"
+                      value={this.state.startDate}
+                      onChange={this.setStart}
+                      min="2018-01-01" max="2021-12-31"/>
+            </label>
             <br/>
-            <label for="end">End Date:</label>
-            <input type="date" id="end" name="end"
-                    value={this.state.endDate}
-                    onChange={this.setEnd}
-                    min="2018-01-01" max="2021-12-31"/>
+            <label>End Date:
+              <input type="date" id="end" name="end"
+                      value={this.state.endDate}
+                      onChange={this.setEnd}
+                      min="2018-01-01" max="2021-12-31"/>
+            </label>
             <br/>
-            <label for="name">Company Name:</label>
-            <input type="text" id="name" name="name"
-                    value={this.state.name}
-                    onChange={this.setName}/>
+            <label>Company Name:
+              <input type="text" name="name"
+                      value={this.state.comapnyName}
+                      onChange={this.setCompanyName}/>
+            </label>
             <br/>
-            <label for="APIToken">API token:</label>
-            <input type="password" id="APIToken" name="APIToken"
-                    minLength="0" required value={this.state.APIToken} onChange={this.setAPI}/>
+            <label>User Name:
+              <input type="text" id="name" name="name"
+                      value={this.state.name}
+                      onChange={this.setName}/>
+            </label>
             <br/>
+            <label>API token:
+              <input type="password" id="APIToken" name="APIToken"
+                      minLength="0" required value={this.state.APIToken} onChange={this.setAPI}/>
+            </label>
+            <br/>
+            <label>Dimension:
+              <select value={this.state.value} id="dimension" onChange={this.setDimension}>
+                <option value="variables/page">Page</option>
+              </select>
+            </label>
           </form>
           <button onClick={() => this._makeApiRequest()}>
             Build Graph
           </button> 
+          <h3>{this.state.errorMessage}</h3>
           <div id="Viz-Display-Area"/>
       </div>);
     }
