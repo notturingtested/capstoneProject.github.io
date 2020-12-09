@@ -4,7 +4,7 @@ import './App.css';
 import VegaChartContainer from './src/charts/VegaChartContainer'; 
 import VegaDataFormatter from './src/charts/VegaDataFormatter'; 
 import embed from 'vega-embed';
-//const apiCaller = require('./../../api/app'); 
+const apiCaller = require('api/app'); 
 var vega = require('vega'); 
 window.vega = vega; 
 window.vegaEmbed = embed;
@@ -126,8 +126,10 @@ class App extends React.Component {
           return; 
     }
 
-    const dateRange = this.state.startDate + this.state.endDate; 
-    //apiCaller.getRequest(this.state.APIToken, this.state.companyName, this.state.username, dateRange, this.state.dimension); 
+    const dateRange = this.getDateRange(this.state.startDate, this.state.endDate); 
+    console.log(dateRange); 
+    //let apiData = await apiCaller.getRequest(this.state.APIToken, this.state.companyName, this.state.username, dateRange, this.state.dimension); 
+    //console.log(apiData); 
 
     const data = [{
       "name": "node-data",
@@ -1467,6 +1469,12 @@ class App extends React.Component {
   }]; 
 
     setTimeout(() => this.setState({data: data, errorMessage: missingFieldMessage}), 500);
+  }
+
+  getDateRange(startTime, endTime) {
+    let startTimeIso = new Date(startTime).toISOString().slice(0, -1); 
+    let endTimeIso = new Date(startTime).toISOString().slice(0, -1);
+    return startTimeIso + "/" + endTimeIso; 
   }
 
   render() {
