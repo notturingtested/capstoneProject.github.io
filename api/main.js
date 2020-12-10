@@ -12,10 +12,9 @@ var temp_company = "OBU Eng SC";
 
 var temp_user = "tsaizhihao";
 
+exports.getData = getData; 
 
-
-
-getData(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension);
+//getData(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension);
 // apiCaller.getSeqRequest(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension, "Home", "Home").then(data => console.log(data));
 
 async function getData(token, company, user, dateRange, dimension) {
