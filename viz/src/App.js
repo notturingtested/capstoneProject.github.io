@@ -6,13 +6,11 @@ import VegaDataFormatter from './src/charts/VegaDataFormatter';
 import embed from 'vega-embed';
 
 // TODO: Delete later on...
-import {miserables, shoppinglist, hardCodedResponse, hardCodedResponse2 } from './TempData'; 
+import {miserables, pages} from './TempData'; 
 const apiCaller = require('api/main'); 
 var vega = require('vega'); 
 window.vega = vega; 
 window.vegaEmbed = embed;
-console.log("Shopping list!"); 
-console.log(shoppinglist); 
 
 class App extends React.Component {
   constructor(props) {
@@ -29,7 +27,9 @@ class App extends React.Component {
       companyName: "", 
       APIToken: "",
       errorMessage: "", 
-      dimension: "variables/page"
+      dimension: "variables/page",
+      prefetchedData: "miserables",
+      loadPreviousRequest: false
     }
 
     this.setEnd = this.setEnd.bind(this);
@@ -38,6 +38,7 @@ class App extends React.Component {
     this.setCompanyName = this.setCompanyName.bind(this); 
     this.setName = this.setName.bind(this);
     this.setDimension = this.setDimension.bind(this); 
+    this.setPrefetchedData = this.setPrefetchedData.bind(this); 
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -71,6 +72,10 @@ class App extends React.Component {
 
   setDimension(event) {
     this.setState({dimension: event.target.value}); 
+  }
+
+  setPrefetchedData(event) {
+    this.setState({prefetchedData: event.target.value}); 
   }
 
   //////////////////////////////////////////////////////////////// Start Mock Functions...
@@ -120,9 +125,6 @@ class App extends React.Component {
 
   async _makeApiRequest() {
     let missingFieldMessage = ""; 
-    
-    const allFields = this.state.startDate + this.state.endDate + this.state.username + this.state.companyName + this.state.APIToken + this.state.dimension;
-    console.log(allFields);
 
     if (!this.state.startDate || !this.state.endDate || !this.state.username || 
         !this.state.companyName || !this.state.APIToken) {
@@ -132,31 +134,47 @@ class App extends React.Component {
     }
 
     const dateRange = this.getDateRange(this.state.startDate, this.state.endDate); 
-    console.log(dateRange); 
-    // let apiData = await apiCaller.getData(this.state.APIToken, this.state.companyName, this.state.username, dateRange, this.state.dimension); 
-    // let objApiData = JSON.parse(apiData); 
+    let apiData = await apiCaller.getData(this.state.APIToken, this.state.companyName, this.state.username, dateRange, this.state.dimension); 
+    let objApiData = JSON.parse(apiData); 
 
-    // const vegaData = [{
-    //   "name": "node-data",
-    //   "values": objApiData.nodes
-    // },
-    // {
-    //   "name": "link-data",
-    //   "values": objApiData.links
-    // }];
+    const vegaData = [{
+      "name": "node-data",
+      "values": objApiData.nodes
+    },
+    {
+      "name": "link-data",
+      "values": objApiData.links
+    }];
 
-    // console.log("Shopping list!");
-    // console.log(shoppinglist);
-    // console.log("DATA!!!");
-    // console.log(vegaData);
+    console.log("API_DATA");
+    console.log(vegaData);
 
-    setTimeout(() => this.setState({data: hardCodedResponse2, errorMessage: missingFieldMessage}), 500);
+    setTimeout(() => this.setState({data: vegaData, errorMessage: missingFieldMessage}), 500);
   }
 
   getDateRange(startTime, endTime) {
     let startTimeIso = new Date(startTime).toISOString().slice(0, -1); 
     let endTimeIso = new Date(endTime).toISOString().slice(0, -1);
     return startTimeIso + "/" + endTimeIso; 
+  }
+
+  // TODO: There should be a simpler way to handle setting/toggling state. 
+  _toggleRequestType() {
+    this.setState({loadPreviousRequest: !this.state.loadPreviousRequest}); 
+  }
+
+  _setCorrespondingPrefetchedData() {
+    let prefetchedData = this.state.prefetchedData; 
+    switch(prefetchedData) {
+      case "miserables": 
+        this.setState({data: miserables});
+        break; 
+      case "pages": 
+        this.setState({data: pages}); 
+        break; 
+      default: 
+        throw new Error("No corresponding prefetched dataset.")
+    }
   }
 
   render() {
@@ -181,49 +199,62 @@ class App extends React.Component {
             type='ForceDirected'
             opts={{isLegendEnabled: this._fakeIsLegendEnabled}}
           />
-          <form>
-            <label>Start Date:
-              <input type="date" id="start" name="start"
-                      value={this.state.startDate}
-                      onChange={this.setStart}
-                      min="2018-01-01" max="2021-12-31"/>
-            </label>
-            <br/>
-            <label>End Date:
-              <input type="date" id="end" name="end"
-                      value={this.state.endDate}
-                      onChange={this.setEnd}
-                      min="2018-01-01" max="2021-12-31"/>
-            </label>
-            <br/>
-            <label>Company Name:
-              <input type="text" name="name"
-                      value={this.state.comapnyName}
-                      onChange={this.setCompanyName}/>
-            </label>
-            <br/>
-            <label>User Name:
-              <input type="text" id="name" name="name"
-                      value={this.state.name}
-                      onChange={this.setName}/>
-            </label>
-            <br/>
-            <label>API token:
-              <input type="password" id="APIToken" name="APIToken"
-                      minLength="0" required value={this.state.APIToken} onChange={this.setAPI}/>
-            </label>
-            <br/>
+          {!this.state.loadPreviousRequest ? 
+            <form>
+              <label>Start Date:
+                <input type="date" id="start" name="start"
+                        value={this.state.startDate}
+                        onChange={this.setStart}
+                        min="2018-01-01" max="2021-12-31"/>
+              </label>
+              <br/>
+              <label>End Date:
+                <input type="date" id="end" name="end"
+                        value={this.state.endDate}
+                        onChange={this.setEnd}
+                        min="2018-01-01" max="2021-12-31"/>
+              </label>
+              <br/>
+              <label>Company Name:
+                <input type="text" name="name"
+                        value={this.state.comapnyName}
+                        onChange={this.setCompanyName}/>
+              </label>
+              <br/>
+              <label>User Name:
+                <input type="text" id="name" name="name"
+                        value={this.state.name}
+                        onChange={this.setName}/>
+              </label>
+              <br/>
+              <label>API token:
+                <input type="password" id="APIToken" name="APIToken"
+                        minLength="0" required value={this.state.APIToken} onChange={this.setAPI}/>
+              </label>
+              <br/>
+              <label>Dimension:
+                <select value={this.state.value} id="dimension" onChange={this.setDimension}>
+                  <option value="variables/page">Page</option>
+                </select>
+              </label>
+            </form> : null} 
+          {this.state.loadPreviousRequest ? 
             <label>Dimension:
-              <select value={this.state.value} id="dimension" onChange={this.setDimension}>
-                <option value="variables/page">Page</option>
-              </select>
-            </label>
-          </form>
-          <button onClick={() => this._makeApiRequest()}>
+            <select value={this.state.value} id="prefetched visualization" onChange={this.setPrefetchedData}>
+              <option value="miserables">Les Miserables</option>
+              <option value="pages">Page</option>
+            </select>
+          </label>
+           : null} 
+          <button onClick={() => this._toggleRequestType()}>
+            {this.state.loadPreviousRequest ? "Load from Dynamic Request" : "Load from Pre-Fetched Request"}
+          </button>
+          <button onClick={() => {!this.state.loadPreviousRequest ? this._makeApiRequest() : this._setCorrespondingPrefetchedData()}}>
             Build Graph
           </button> 
           <h3>{this.state.errorMessage}</h3>
           <div id="Viz-Display-Area"/>
+          <div id="Bottom-Area"/>
       </div>);
     }
 

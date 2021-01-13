@@ -1335,7 +1335,7 @@ const miserables = [{
 }]
 }]; 
 
-const shoppinglist = [{
+const pages = [{
   "name": "node-data",
   "values": [{
     "name": "Shopping Cart|Cart Details",
@@ -1784,201 +1784,201 @@ const shoppinglist = [{
 }]
 }]
 
-const hardCodedResponse = [
-  {
-    "name": "node-data",
-    "values":[{
-        "name": 'Shopping Cart|Cart Details',
-        "group": 2390504924,
-        "index": 2390504924,
-        "volume": 85335
-      },
-      {
-        "name": 'Home',
-        "group": 3306266643,
-        "index": 3306266643,
-        "volume": 83089
-      },
-      { "name": 'Unspecified', "group": 0, "index": 0, "volume": 59365 },
-      {
-        "name": 'Search Results',
-        "group": 2897271828,
-        "index": 2897271828,
-        "volume": 58266
-      },
-      {
-        "name": 'Store Locator|Search',
-        "group": 2933795879,
-        "index": 2933795879,
-        "volume": 44741
-      },
-      {
-        "name": 'Shopping Cart|Shipping Information',
-        "group": 3786354655,
-        "index": 3786354655,
-        "volume": 42012
-      },
-      {
-        "name": 'Equipment',
-        "group": 1834355532,
-        "index": 1834355532,
-        "volume": 36659
-      },
-      {
-        "name": 'Shopping Cart|Billing Information',
-        "group": 4086749071,
-        "index": 4086749071,
-        "volume": 30524
-      },
-      {
-        "name": 'Store Locator|Results',
-        "group": 2988046219,
-        "index": 2988046219,
-        "volume": 30249
-      },
-      { "name": 'Other', "group": -1, "index": -1, "volume": 400357 }
-    ]
-  },
-  {
-    "name": "link-data",
-    "values": [
-      { "source": 2390504924, "target": 3786354655, "value": 42009 },
-      { "source": 2390504924, "target": 2390504924, "value": 6795 },
-      { "source": 2390504924, "target": 3306266643, "value": 6745 },
-      { "source": 2390504924, "target": 2897271828, "value": 2592 },
-      { "source": 2390504924, "target": 2933795879, "value": 1432 },
-      { "source": 2390504924, "target": -1, "value": 27843 },
-      { "source": 3306266643, "target": 2897271828, "value": 17594 },
-      { "source": 3306266643, "target": 1834355532, "value": 12887 },
-      { "source": 3306266643, "target": 2933795879, "value": 3576 },
-      { "source": 3306266643, "target": 2390504924, "value": 1736 },
-      { "source": 3306266643, "target": 3306266643, "value": 388 },
-      { "source": 3306266643, "target": -1, "value": 40874 },
-      { "source": 2897271828, "target": 2933795879, "value": 4309 },
-      { "source": 2897271828, "target": 1834355532, "value": 3542 },
-      { "source": 2897271828, "target": 3306266643, "value": 3500 },
-      { "source": 2897271828, "target": 2897271828, "value": 3246 },
-      { "source": 2897271828, "target": 2390504924, "value": 2637 },
-      { "source": 2897271828, "target": -1, "value": 44479 },
-      { "source": 2933795879, "target": 2988046219, "value": 30247 },
-      { "source": 2933795879, "target": 3306266643, "value": 2131 },
-      { "source": 2933795879, "target": 2897271828, "value": 2024 },
-      { "source": 2933795879, "target": 2933795879, "value": 1089 },
-      { "source": 2933795879, "target": 2390504924, "value": 1042 },
-      { "source": 2933795879, "target": -1, "value": 7320 },
-      { "source": 3786354655, "target": 4086749071, "value": 30523 },
-      { "source": 3786354655, "target": 2897271828, "value": 2240 },
-      { "source": 3786354655, "target": 3306266643, "value": 450 },
-      { "source": 3786354655, "target": 1834355532, "value": 1 },
-      { "source": 3786354655, "target": -1, "value": 10432 },
-      { "source": 1834355532, "target": 2933795879, "value": 2285 },
-      { "source": 1834355532, "target": 1834355532, "value": 701 },
-      { "source": 1834355532, "target": 3306266643, "value": 676 },
-      { "source": 1834355532, "target": 2897271828, "value": 607 },
-      { "source": 1834355532, "target": 2390504924, "value": 149 },
-      { "source": 1834355532, "target": -1, "value": 35831 },
-      { "source": 4086749071, "target": 3306266643, "value": 3070 },
-      { "source": 4086749071, "target": 2897271828, "value": 1497 },
-      { "source": 4086749071, "target": 1834355532, "value": 1 },
-      { "source": 4086749071, "target": -1, "value": 27541 },
-      { "source": 2988046219, "target": 3306266643, "value": 2748 },
-      { "source": 2988046219, "target": 2897271828, "value": 1315 },
-      { "source": 2988046219, "target": 1834355532, "value": 5 },
-      { "source": 2988046219, "target": 2988046219, "value": 1 },
-      { "source": 2988046219, "target": 2933795879, "value": 1 },
-      { "source": 2988046219, "target": -1, "value": 389 }
-    ]
-  }
-]
+// const hardCodedResponse = [
+//   {
+//     "name": "node-data",
+//     "values":[{
+//         "name": 'Shopping Cart|Cart Details',
+//         "group": 2390504924,
+//         "index": 2390504924,
+//         "volume": 85335
+//       },
+//       {
+//         "name": 'Home',
+//         "group": 3306266643,
+//         "index": 3306266643,
+//         "volume": 83089
+//       },
+//       { "name": 'Unspecified', "group": 0, "index": 0, "volume": 59365 },
+//       {
+//         "name": 'Search Results',
+//         "group": 2897271828,
+//         "index": 2897271828,
+//         "volume": 58266
+//       },
+//       {
+//         "name": 'Store Locator|Search',
+//         "group": 2933795879,
+//         "index": 2933795879,
+//         "volume": 44741
+//       },
+//       {
+//         "name": 'Shopping Cart|Shipping Information',
+//         "group": 3786354655,
+//         "index": 3786354655,
+//         "volume": 42012
+//       },
+//       {
+//         "name": 'Equipment',
+//         "group": 1834355532,
+//         "index": 1834355532,
+//         "volume": 36659
+//       },
+//       {
+//         "name": 'Shopping Cart|Billing Information',
+//         "group": 4086749071,
+//         "index": 4086749071,
+//         "volume": 30524
+//       },
+//       {
+//         "name": 'Store Locator|Results',
+//         "group": 2988046219,
+//         "index": 2988046219,
+//         "volume": 30249
+//       },
+//       { "name": 'Other', "group": -1, "index": -1, "volume": 400357 }
+//     ]
+//   },
+//   {
+//     "name": "link-data",
+//     "values": [
+//       { "source": 2390504924, "target": 3786354655, "value": 42009 },
+//       { "source": 2390504924, "target": 2390504924, "value": 6795 },
+//       { "source": 2390504924, "target": 3306266643, "value": 6745 },
+//       { "source": 2390504924, "target": 2897271828, "value": 2592 },
+//       { "source": 2390504924, "target": 2933795879, "value": 1432 },
+//       { "source": 2390504924, "target": -1, "value": 27843 },
+//       { "source": 3306266643, "target": 2897271828, "value": 17594 },
+//       { "source": 3306266643, "target": 1834355532, "value": 12887 },
+//       { "source": 3306266643, "target": 2933795879, "value": 3576 },
+//       { "source": 3306266643, "target": 2390504924, "value": 1736 },
+//       { "source": 3306266643, "target": 3306266643, "value": 388 },
+//       { "source": 3306266643, "target": -1, "value": 40874 },
+//       { "source": 2897271828, "target": 2933795879, "value": 4309 },
+//       { "source": 2897271828, "target": 1834355532, "value": 3542 },
+//       { "source": 2897271828, "target": 3306266643, "value": 3500 },
+//       { "source": 2897271828, "target": 2897271828, "value": 3246 },
+//       { "source": 2897271828, "target": 2390504924, "value": 2637 },
+//       { "source": 2897271828, "target": -1, "value": 44479 },
+//       { "source": 2933795879, "target": 2988046219, "value": 30247 },
+//       { "source": 2933795879, "target": 3306266643, "value": 2131 },
+//       { "source": 2933795879, "target": 2897271828, "value": 2024 },
+//       { "source": 2933795879, "target": 2933795879, "value": 1089 },
+//       { "source": 2933795879, "target": 2390504924, "value": 1042 },
+//       { "source": 2933795879, "target": -1, "value": 7320 },
+//       { "source": 3786354655, "target": 4086749071, "value": 30523 },
+//       { "source": 3786354655, "target": 2897271828, "value": 2240 },
+//       { "source": 3786354655, "target": 3306266643, "value": 450 },
+//       { "source": 3786354655, "target": 1834355532, "value": 1 },
+//       { "source": 3786354655, "target": -1, "value": 10432 },
+//       { "source": 1834355532, "target": 2933795879, "value": 2285 },
+//       { "source": 1834355532, "target": 1834355532, "value": 701 },
+//       { "source": 1834355532, "target": 3306266643, "value": 676 },
+//       { "source": 1834355532, "target": 2897271828, "value": 607 },
+//       { "source": 1834355532, "target": 2390504924, "value": 149 },
+//       { "source": 1834355532, "target": -1, "value": 35831 },
+//       { "source": 4086749071, "target": 3306266643, "value": 3070 },
+//       { "source": 4086749071, "target": 2897271828, "value": 1497 },
+//       { "source": 4086749071, "target": 1834355532, "value": 1 },
+//       { "source": 4086749071, "target": -1, "value": 27541 },
+//       { "source": 2988046219, "target": 3306266643, "value": 2748 },
+//       { "source": 2988046219, "target": 2897271828, "value": 1315 },
+//       { "source": 2988046219, "target": 1834355532, "value": 5 },
+//       { "source": 2988046219, "target": 2988046219, "value": 1 },
+//       { "source": 2988046219, "target": 2933795879, "value": 1 },
+//       { "source": 2988046219, "target": -1, "value": 389 }
+//     ]
+//   }
+// ]
 
-const hardCodedResponse2 = [
-  {
-    "name": "node-data",
-    "values": [
-      {
-        name: 'Shopping Cart|Cart Details',
-        group: 1,
-        index: 1,
-        volume: 85335
-      },
-      { name: 'Home', group: 2, index: 2, volume: 83089 },
-      { name: 'Unspecified', group: 3, index: 3, volume: 59365 },
-      { name: 'Search Results', group: 4, index: 4, volume: 58266 },
-      { name: 'Store Locator|Search', group: 5, index: 5, volume: 44741 },
-      {
-        name: 'Shopping Cart|Shipping Information',
-        group: 6,
-        index: 6,
-        volume: 42012
-      },
-      { name: 'Equipment', group: 7, index: 7, volume: 36659 },
-      {
-        name: 'Shopping Cart|Billing Information',
-        group: 8,
-        index: 8,
-        volume: 30524
-      },
-      {
-        name: 'Store Locator|Results',
-        group: 9,
-        index: 9,
-        volume: 30249
-      },
-      { name: 'Other', group: 0, index: 0, volume: 400357 }
-    ]
-  },
-  {
-    "name": "link-data",
-    "values": [
-      { source: 1, target: 6, value: 42009 },
-      { source: 1, target: 1, value: 6795 },
-      { source: 1, target: 2, value: 6745 },
-      { source: 1, target: 4, value: 2592 },
-      { source: 1, target: 5, value: 1432 },
-      { source: 1, target: 0, value: 27843 },
-      { source: 2, target: 4, value: 17594 },
-      { source: 2, target: 7, value: 12887 },
-      { source: 2, target: 5, value: 3576 },
-      { source: 2, target: 1, value: 1736 },
-      { source: 2, target: 2, value: 388 },
-      { source: 2, target: 0, value: 40874 },
-      { source: 4, target: 5, value: 4309 },
-      { source: 4, target: 7, value: 3542 },
-      { source: 4, target: 2, value: 3500 },
-      { source: 4, target: 4, value: 3246 },
-      { source: 4, target: 1, value: 2637 },
-      { source: 4, target: 0, value: 44479 },
-      { source: 5, target: 9, value: 30247 },
-      { source: 5, target: 2, value: 2131 },
-      { source: 5, target: 4, value: 2024 },
-      { source: 5, target: 5, value: 1089 },
-      { source: 5, target: 1, value: 1042 },
-      { source: 5, target: 0, value: 7320 },
-      { source: 6, target: 8, value: 30523 },
-      { source: 6, target: 4, value: 2240 },
-      { source: 6, target: 2, value: 450 },
-      { source: 6, target: 7, value: 1 },
-      { source: 6, target: 0, value: 10432 },
-      { source: 7, target: 5, value: 2285 },
-      { source: 7, target: 7, value: 701 },
-      { source: 7, target: 2, value: 676 },
-      { source: 7, target: 4, value: 607 },
-      { source: 7, target: 1, value: 149 },
-      { source: 7, target: 0, value: 35831 },
-      { source: 8, target: 2, value: 3070 },
-      { source: 8, target: 4, value: 1497 },
-      { source: 8, target: 7, value: 1 },
-      { source: 8, target: 0, value: 27541 },
-      { source: 9, target: 2, value: 2748 },
-      { source: 9, target: 4, value: 1315 },
-      { source: 9, target: 7, value: 5 },
-      { source: 9, target: 9, value: 1 },
-      { source: 9, target: 5, value: 1 },
-      { source: 9, target: 0, value: 389 }
-    ]
-  }
-]
+// const hardCodedResponse2 = [
+//   {
+//     "name": "node-data",
+//     "values": [
+//       {
+//         name: 'Shopping Cart|Cart Details',
+//         group: 1,
+//         index: 1,
+//         volume: 85335
+//       },
+//       { name: 'Home', group: 2, index: 2, volume: 83089 },
+//       { name: 'Unspecified', group: 3, index: 3, volume: 59365 },
+//       { name: 'Search Results', group: 4, index: 4, volume: 58266 },
+//       { name: 'Store Locator|Search', group: 5, index: 5, volume: 44741 },
+//       {
+//         name: 'Shopping Cart|Shipping Information',
+//         group: 6,
+//         index: 6,
+//         volume: 42012
+//       },
+//       { name: 'Equipment', group: 7, index: 7, volume: 36659 },
+//       {
+//         name: 'Shopping Cart|Billing Information',
+//         group: 8,
+//         index: 8,
+//         volume: 30524
+//       },
+//       {
+//         name: 'Store Locator|Results',
+//         group: 9,
+//         index: 9,
+//         volume: 30249
+//       },
+//       { name: 'Other', group: 0, index: 0, volume: 400357 }
+//     ]
+//   },
+//   {
+//     "name": "link-data",
+//     "values": [
+//       { source: 1, target: 6, value: 42009 },
+//       { source: 1, target: 1, value: 6795 },
+//       { source: 1, target: 2, value: 6745 },
+//       { source: 1, target: 4, value: 2592 },
+//       { source: 1, target: 5, value: 1432 },
+//       { source: 1, target: 0, value: 27843 },
+//       { source: 2, target: 4, value: 17594 },
+//       { source: 2, target: 7, value: 12887 },
+//       { source: 2, target: 5, value: 3576 },
+//       { source: 2, target: 1, value: 1736 },
+//       { source: 2, target: 2, value: 388 },
+//       { source: 2, target: 0, value: 40874 },
+//       { source: 4, target: 5, value: 4309 },
+//       { source: 4, target: 7, value: 3542 },
+//       { source: 4, target: 2, value: 3500 },
+//       { source: 4, target: 4, value: 3246 },
+//       { source: 4, target: 1, value: 2637 },
+//       { source: 4, target: 0, value: 44479 },
+//       { source: 5, target: 9, value: 30247 },
+//       { source: 5, target: 2, value: 2131 },
+//       { source: 5, target: 4, value: 2024 },
+//       { source: 5, target: 5, value: 1089 },
+//       { source: 5, target: 1, value: 1042 },
+//       { source: 5, target: 0, value: 7320 },
+//       { source: 6, target: 8, value: 30523 },
+//       { source: 6, target: 4, value: 2240 },
+//       { source: 6, target: 2, value: 450 },
+//       { source: 6, target: 7, value: 1 },
+//       { source: 6, target: 0, value: 10432 },
+//       { source: 7, target: 5, value: 2285 },
+//       { source: 7, target: 7, value: 701 },
+//       { source: 7, target: 2, value: 676 },
+//       { source: 7, target: 4, value: 607 },
+//       { source: 7, target: 1, value: 149 },
+//       { source: 7, target: 0, value: 35831 },
+//       { source: 8, target: 2, value: 3070 },
+//       { source: 8, target: 4, value: 1497 },
+//       { source: 8, target: 7, value: 1 },
+//       { source: 8, target: 0, value: 27541 },
+//       { source: 9, target: 2, value: 2748 },
+//       { source: 9, target: 4, value: 1315 },
+//       { source: 9, target: 7, value: 5 },
+//       { source: 9, target: 9, value: 1 },
+//       { source: 9, target: 5, value: 1 },
+//       { source: 9, target: 0, value: 389 }
+//     ]
+//   }
+// ]
 
 export {
-  miserables, shoppinglist, hardCodedResponse, hardCodedResponse2
+  miserables, pages
 }

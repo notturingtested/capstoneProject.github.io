@@ -10,7 +10,6 @@ export default class ForceDirectedScales {
 	}
 
   getColorScales(opts) {
-    // TODO: Update this so it is no longer hard coded later on.
     return {
       "name": "color",
       "type": "ordinal",
