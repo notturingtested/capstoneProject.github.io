@@ -4,7 +4,7 @@ exports.getRequest = getRequest
 exports.getSeqRequest = getSeqRequest
 exports.getToAllRequest = getToAllRequest
 
-async function getRequest(token, company, user, dateRange, dimension) {
+async function getRequest(token, company, user, dateRange, dimension, limit) {
     const res = await fetch("https://appservice5.omniture.com/analytics/1.0/reports?allowRemoteLoad=default&useCache=true&includeOberonXml=false&includePlatformPredictiveObjects=false", {
         "headers": {
             "accept": "application/json",
@@ -46,7 +46,7 @@ async function getRequest(token, company, user, dateRange, dimension) {
             "dimension": dimension,
             "settings": {
                 "countRepeatInstances": true,
-                "limit": 9,
+                "limit": limit,
                 "page": 0,
                 "nonesBehavior": "return-nones"
             },

@@ -17,10 +17,10 @@ exports.getData = getData;
 //getData(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension);
 // apiCaller.getSeqRequest(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension, "Home", "Home").then(data => console.log(data));
 
-async function getData(token, company, user, dateRange, dimension) {
+async function getData(token, company, user, dateRange, dimension, limit) {
     let parser  = new apiParser();
     // Simple request to get the top 10
-    let data = await apiCaller.getRequest(token, company, user, dateRange, dimension);
+    let data = await apiCaller.getRequest(token, company, user, dateRange, dimension, limit);
     // store the top 10 nodes to JSON, and name and item to map for future use
     parser.parse(data)
     // for loop through to make individual request fromAllPagesToOnePage, *forEach doesn't work with async

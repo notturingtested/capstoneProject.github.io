@@ -29,7 +29,8 @@ class App extends React.Component {
       errorMessage: "", 
       dimension: "variables/page",
       prefetchedData: "miserables",
-      loadPreviousRequest: false
+      loadPreviousRequest: false,
+      limit: 100
     }
 
     this.setEnd = this.setEnd.bind(this);
@@ -39,6 +40,7 @@ class App extends React.Component {
     this.setName = this.setName.bind(this);
     this.setDimension = this.setDimension.bind(this); 
     this.setPrefetchedData = this.setPrefetchedData.bind(this); 
+    this.setLimit = this.setLimit.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -76,6 +78,10 @@ class App extends React.Component {
 
   setPrefetchedData(event) {
     this.setState({prefetchedData: event.target.value}); 
+  }
+
+  setLimit(event) {
+    this.setState({limit: event.target.value});
   }
 
   //////////////////////////////////////////////////////////////// Start Mock Functions...
@@ -134,7 +140,7 @@ class App extends React.Component {
     }
 
     const dateRange = this.getDateRange(this.state.startDate, this.state.endDate); 
-    let apiData = await apiCaller.getData(this.state.APIToken, this.state.companyName, this.state.username, dateRange, this.state.dimension); 
+    let apiData = await apiCaller.getData(this.state.APIToken, this.state.companyName, this.state.username, dateRange, this.state.dimension, this.state.limit); 
     let objApiData = JSON.parse(apiData); 
 
     const vegaData = [{
@@ -235,7 +241,15 @@ class App extends React.Component {
               <label>Dimension:
                 <select value={this.state.value} id="dimension" onChange={this.setDimension}>
                   <option value="variables/page">Page</option>
+                  <option value="variables/browser">Browser</option>
+                  <option value="variables/product">Product</option>
+                  <option value="variables/daterangeday">Day</option>
+                  <option value="variables/evar9">Gender</option>
                 </select>
+              </label>
+              <br/>
+              <label>Number Nodes:
+                <input type="number" name="limit" value={this.state.limit} id="limit" onChange={this.setLimit}/>
               </label>
             </form> : null} 
           {this.state.loadPreviousRequest ? 
