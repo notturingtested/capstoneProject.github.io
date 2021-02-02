@@ -193,8 +193,6 @@ export default class ForceDirected extends VegaViz {
   */ 
 
 	getChartConfig(opts) {
-    console.log("FORMATTED DATA!!!");
-    console.log(opts.formattedData);
 		let config = {
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       // Fit within width/height, with width/height being the total.

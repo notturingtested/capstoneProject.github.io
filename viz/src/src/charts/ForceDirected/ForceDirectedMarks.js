@@ -3,7 +3,6 @@
 import { _ } from './../../analytics/core';
 
 export default class ForceDirectedMarks {
-  // TODO: Update this so it is no longer hard coded later on. 
   getMarks(opts) {
 		const marks = _.compact([{
       "name": "nodes",

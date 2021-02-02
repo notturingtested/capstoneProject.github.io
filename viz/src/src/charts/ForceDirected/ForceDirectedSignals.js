@@ -2,8 +2,7 @@
 // import { _ } from '@analytics/core';
 import { _ } from './../../analytics/core';
 
-export default class ForceDirectedSignals {
-  // TODO: Update this so it is no longer hard coded later on. 
+export default class ForceDirectedSignals { 
   getSignals(opts) {
     return _.compact([
       {
