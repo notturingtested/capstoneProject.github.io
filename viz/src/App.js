@@ -33,14 +33,11 @@ class App extends React.Component {
       limit: 10
     }
 
-    this.setEnd = this.setEnd.bind(this);
-    this.setStart = this.setStart.bind(this);
-    this.setAPI = this.setAPI.bind(this);
-    this.setCompanyName = this.setCompanyName.bind(this); 
-    this.setName = this.setName.bind(this);
+    this.setEventTargetValue = this.setEventTargetValue.bind(this); 
+    this.setEventTargetValueNum = this.setEventTargetValueNum.bind(this); 
+    this.setIncrememtalLimit = this.setIncrememtalLimit.bind(this); 
     this.setDimension = this.setDimension.bind(this); 
     this.setPrefetchedData = this.setPrefetchedData.bind(this); 
-    this.setLimit = this.setLimit.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -52,24 +49,27 @@ class App extends React.Component {
     }
   }
 
-  setEnd(event) {
-    this.setState({endDate: event.target.value});
+  // Used for <input /> fields.
+  setEventTargetValue(event, value) {
+    const name = event.target.name; 
+    let stateValue = value ? value : event.target.value; 
+    this.setState({[name]: stateValue});
   }
 
-  setStart(event) {
-    this.setState({startDate: event.target.value});
+  setIncrememtalLimit(event) {
+    const value = parseInt(event.target.value, 10); 
+
+    if (value < 10 || value > 100) {
+      this.setState({errorMessage: "Node count must be between 10 and 100."});
+    }
+    else {
+      this.setEventTargetValue(event, value); 
+    }
   }
 
-  setAPI(event) {
-    this.setState({APIToken: event.target.value});
-  }
-  
-  setCompanyName(event) {
-    this.setState({companyName: event.target.value});
-  }
-
-  setName(event) {
-    this.setState({username: event.target.value});
+  setEventTargetValueNum(event) {
+    const value = parseInt(event.target.value, 10); 
+    this.setEventTargetValue(event, value); 
   }
 
   setDimension(event) {
@@ -80,11 +80,7 @@ class App extends React.Component {
     this.setState({prefetchedData: event.target.value}); 
   }
 
-  setLimit(event) {
-    this.setState({limit: event.target.value});
-  }
-
-  //////////////////////////////////////////////////////////////// Start Mock Functions...
+  //////////////////////////////////////////////////////////////// Start Mock Functions
 
   // Note: We are not dealing with data conversion yet (Adobe may handle this later on). 
   _buildFakeData() {
@@ -169,8 +165,12 @@ class App extends React.Component {
   }
 
   _expandGraph() {
-    this.setState({ limit: this.state.limit + 10 },() => this._makeApiRequest());
-    
+    if (this.state.limit + 10 > 100) {
+      this.setState({errorMessage: "The graph cannot be extended past 100 nodes."}); 
+    }
+    else {
+      this.setState({ limit: this.state.limit + 10 },() => this._makeApiRequest());
+    }
   }
 
   _setCorrespondingPrefetchedData() {
@@ -223,36 +223,36 @@ class App extends React.Component {
           {!this.state.loadPreviousRequest ? 
             <form>
               <label>Start Date:
-                <input type="date" id="start" name="start"
+                <input type="date" id="start" name="startDate"
                         value={this.state.startDate}
-                        onChange={this.setStart}
+                        onChange={this.setEventTargetValue}
                         min="2018-01-01" max="2021-12-31"/>
               </label>
               <br/>
               <label>End Date:
-                <input type="date" id="end" name="end"
+                <input type="date" id="end" name="endDate"
                         value={this.state.endDate}
-                        onChange={this.setEnd}
+                        onChange={this.setEventTargetValue}
                         min="2018-01-01" max="2021-12-31"/>
               </label>
               <br/>
               <label>Company Name:
-                <input type="text" name="name"
+                <input type="text" name="companyName"
                         value={this.state.comapnyName}
                         defaultValue="OBU Eng SC"
-                        onChange={this.setCompanyName}/>
+                        onChange={this.setEventTargetValue}/>
               </label>
               <br/>
               <label>User Name:
-                <input type="text" id="name" name="name"
+                <input type="text" id="name" name="userName"
                         value={this.state.name}
                         defaultValue="tsaizhihao"
-                        onChange={this.setName}/>
+                        onChange={this.setEventTargetValue}/>
               </label>
               <br/>
               <label>API token:
                 <input type="password" id="APIToken" name="APIToken"
-                        minLength="0" required value={this.state.APIToken} onChange={this.setAPI}/>
+                        minLength="0" required value={this.state.APIToken} onChange={this.setEventTargetValue}/>
               </label>
               <br/>
               <label>Dimension:
@@ -266,17 +266,15 @@ class App extends React.Component {
               </label>
               <br/>
               <label>Number Nodes:
-                <input type="number" name="limit" value={this.state.limit} id="limit" onChange={this.setLimit}/>
+                <input type="number" name="limit" value={this.state.limit} id="limit" onChange={this.setIncrememtalLimit}/>
               </label>
-            </form> : null} 
-          {this.state.loadPreviousRequest ? 
+            </form> : 
             <label>Dimension:
             <select value={this.state.value} id="prefetched visualization" onChange={this.setPrefetchedData}>
               <option value="miserables">Les Miserables</option>
               <option value="pages">Page</option>
             </select>
-          </label>
-           : null} 
+          </label>} 
           <button onClick={() => this._toggleRequestType()}>
             {this.state.loadPreviousRequest ? "Load from Dynamic Request" : "Load from Pre-Fetched Request"}
           </button>

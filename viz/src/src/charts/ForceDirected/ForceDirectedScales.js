@@ -6,20 +6,30 @@ export default class ForceDirectedScales {
   getScales(opts) {
 		return _.compact([
       this.getColorScales(opts),
+      this.getVolumeScale(opts)
     ]);
-	}
-
+  }
+  
   getColorScales(opts) {
     return {
-      "name": "color",
-      "type": "ordinal",
-      "domain": {
-        "data": "node-data",
-        "field": "group"
+      name: "color",
+      type: "ordinal",
+      domain: {
+        data: "node-data",
+        field: "group"
       },
-      "range": {
-        "scheme": "category20c"
+      range: {
+        scheme: "category20c"
       }
+    }
+  }
+
+  getVolumeScale(opts) {
+    return {
+      name: "size",
+      domain: {data: "node-data", field: "volume"},
+      zero: false,
+      range: [1, 10000]
     }
   }
 
