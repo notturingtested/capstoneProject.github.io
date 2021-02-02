@@ -30,13 +30,17 @@ export default class ForceDirectedMarks {
             "field": "group"
           },
           "stroke": {
-            "value": "white"
-          }
+            "value": "pink"
+          },
+          "size": {
+            "scale": "size", 
+            "field": "volume"
+          },
+          "tooltip": {
+            "signal": "{Name: datum.name, Value: format(datum.volume, ',')}"
+          },
         },
         "update": {
-          "size": {
-            "signal": "2 * nodeRadius * nodeRadius"
-          },
           "cursor": {
             "value": "pointer"
           }
@@ -89,15 +93,16 @@ export default class ForceDirectedMarks {
       "from": {
         "data": "link-data"
       },
-      "interactive": false,
+      "interactive": true,
       "encode": {
         "update": {
           "stroke": {
             "value": "#ccc"
           },
           "strokeWidth": {
-            "value": 0.5
+            "value": ".5"
           }
+          
         }
       },
       "transform": [{

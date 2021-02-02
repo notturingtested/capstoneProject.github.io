@@ -6,8 +6,15 @@ export default class ForceDirectedScales {
   getScales(opts) {
 		return _.compact([
       this.getColorScales(opts),
+      {
+        "name": "size",
+        "domain": {"data": "node-data", "field": "volume"},
+        "zero": false,
+        "range": [1, 10000]
+      }
     ]);
-	}
+  }
+  
 
   getColorScales(opts) {
     return {
