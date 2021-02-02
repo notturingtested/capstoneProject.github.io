@@ -21,16 +21,16 @@ class App extends React.Component {
     this.state = {
       isVizPrepped: false,
       data: [],
-      startDate: "",
-      endDate: "",
-      username: "",
-      companyName: "", 
-      APIToken: "",
+      startDate: "2019-01-01",
+      endDate: "2021-01-01",
+      username: "tsaizhihao",
+      companyName: "OBU Eng SC", 
+      APIToken: "Bearer SC:00f9ce39d9469e76337519f621e87aa1e0d5a5711f29cb169ab768ff6f216031",
       errorMessage: "", 
       dimension: "variables/page",
       prefetchedData: "miserables",
       loadPreviousRequest: false,
-      limit: 100
+      limit: 10
     }
 
     this.setEnd = this.setEnd.bind(this);
@@ -131,7 +131,6 @@ class App extends React.Component {
 
   async _makeApiRequest() {
     let missingFieldMessage = ""; 
-
     if (!this.state.startDate || !this.state.endDate || !this.state.username || 
         !this.state.companyName || !this.state.APIToken) {
           missingFieldMessage = "Please fill in all fields to build a new graph.";
@@ -169,6 +168,11 @@ class App extends React.Component {
     this.setState({loadPreviousRequest: !this.state.loadPreviousRequest}); 
   }
 
+  _expandGraph() {
+    this.setState({ limit: this.state.limit + 10 },() => this._makeApiRequest());
+    
+  }
+
   _setCorrespondingPrefetchedData() {
     let prefetchedData = this.state.prefetchedData; 
     switch(prefetchedData) {
@@ -188,6 +192,17 @@ class App extends React.Component {
     const colors = this._buildHardCodedColors();
 
     let mainCode;
+
+    let loadMore;
+    if (this.state.loadPreviousRequest) {
+      loadMore = (<div/>);
+    } else {
+      loadMore = (
+        <button onClick={() => this._expandGraph()}>
+          Load More Nodes
+        </button>
+      )
+    }
 
     if (!this.state.isVizPrepped) {
       mainCode = (
@@ -224,12 +239,14 @@ class App extends React.Component {
               <label>Company Name:
                 <input type="text" name="name"
                         value={this.state.comapnyName}
+                        defaultValue="OBU Eng SC"
                         onChange={this.setCompanyName}/>
               </label>
               <br/>
               <label>User Name:
                 <input type="text" id="name" name="name"
                         value={this.state.name}
+                        defaultValue="tsaizhihao"
                         onChange={this.setName}/>
               </label>
               <br/>
@@ -265,7 +282,8 @@ class App extends React.Component {
           </button>
           <button onClick={() => {!this.state.loadPreviousRequest ? this._makeApiRequest() : this._setCorrespondingPrefetchedData()}}>
             Build Graph
-          </button> 
+          </button>
+          {loadMore}
           <h3>{this.state.errorMessage}</h3>
           <div id="Viz-Display-Area"/>
           <div id="Bottom-Area"/>

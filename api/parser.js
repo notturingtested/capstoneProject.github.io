@@ -3,7 +3,7 @@ module.exports = class parser {
       this.simpleMap = new Map();
       this.count = 0;
       this.indexMap = new Map();
-      this.other = "Other";
+      this.other = "Other Pages";
       this.indexMap.set(this.other, this.count++);
       this.allNodes = [];
       this.jsonObj = {
@@ -38,10 +38,10 @@ module.exports = class parser {
           index: this.indexMap.get(this.other),
           volume: other
       })        
-      return this.simpleMap;
   }    
   
-  parseToJson(fromPage, data) {
+  parseToJson(data) {
+      let res = [];
       // toOther is the sum of everything besides top limit
       let toOther = data.summaryData.totals[0];
       // forEach through the data.rows to store links into JSON
@@ -50,18 +50,23 @@ module.exports = class parser {
           toOther = toOther - element.data[0];
           // store to JSON
           this.jsonObj.links.push({
-              source: this.indexMap.get(fromPage),
+              source: this.indexMap.get(data.fromPage),
               target: this.indexMap.get(element.value),
               value: parseInt(element.data[0])
           });
       });
       // store link to OTHER into JSON
       if (toOther) {
-          this.jsonObj.links.push({
-              source: this.indexMap.get(fromPage),
+        this.jsonObj.links.push({
+              source: this.indexMap.get(data.fromPage),
               target: this.indexMap.get(this.other),
               value: toOther
           });
       }
+      return res;
+  }
+
+  loadToJson(results) {
+    this.jsonObj.links.push(results);
   }
 }

@@ -192,7 +192,8 @@ async function getToAllRequest(token, company, user, dateRange, dimension, fromP
             "method": "POST",
             "mode": "cors"
         });
-    const json = await res.json();
+    let json = await res.json();
+    json.fromPage = fromPage;
     return json;
 }
 
