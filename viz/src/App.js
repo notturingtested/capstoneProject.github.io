@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import './App.css';
 import VegaChartContainer from './src/charts/VegaChartContainer'; 
-import VegaDataFormatter from './src/charts/VegaDataFormatter';  
+// import VegaDataFormatter from './src/charts/VegaDataFormatter';  
 import embed from 'vega-embed';
 
 // TODO: Delete later on...
@@ -25,7 +25,7 @@ class App extends React.Component {
       endDate: "2021-01-01",
       username: "tsaizhihao",
       companyName: "OBU Eng SC", 
-      APIToken: "Bearer SC:00f9ce39d9469e76337519f621e87aa1e0d5a5711f29cb169ab768ff6f216031",
+      APIToken: "Bearer SC:d77896cc47c6c9c918382899ee3d10eca762bf06801267b8c24bbba9012f08bd",
       errorMessage: "", 
       dimension: "variables/page",
       prefetchedData: "miserables",
@@ -38,6 +38,10 @@ class App extends React.Component {
     this.setIncrememtalLimit = this.setIncrememtalLimit.bind(this); 
     this.setDimension = this.setDimension.bind(this); 
     this.setPrefetchedData = this.setPrefetchedData.bind(this); 
+
+    this.expandGraph = this._expandGraph.bind(this);
+
+    vega.expressionFunction("loadMore", this.expandGraph);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -165,6 +169,7 @@ class App extends React.Component {
   }
 
   _expandGraph() {
+    console.log("node clicked");
     if (this.state.limit + 10 > 100) {
       this.setState({errorMessage: "The graph cannot be extended past 100 nodes."}); 
     }

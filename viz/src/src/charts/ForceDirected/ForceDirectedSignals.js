@@ -12,6 +12,7 @@ export default class ForceDirectedSignals {
       this.getLinkDistance(opts),
       this.getStatic(opts),
       this.getFix(opts), 
+      this.getClicked(opts),
       this.getNode(opts),
       this.getRestart(opts)
     ]); 
@@ -97,6 +98,19 @@ export default class ForceDirectedSignals {
           events: "[symbol:mousedown, window:mouseup] > window:mousemove!",
           update: "xy()",
           force: true
+        }
+      ]
+    };
+  }
+
+  getClicked(opts) {
+    return {
+      description: "Clicked an active node.",
+      name: "clicked",
+      value: false,
+      on: [{
+          events: "symbol:click",
+          update: "datum.name == 'Other Pages' ? loadMore() : null"
         }
       ]
     };

@@ -25,7 +25,6 @@ async function getData(token, company, user, dateRange, dimension, limit) {
     parser.parse(data)
 
     // for loop through to make individual request fromAllPagesToOnePage, *forEach doesn't work with async
-    let counter = 0;
     let promises = [];
     for (const [key, value] of parser.simpleMap.entries()) {
         promises.push(apiCaller.getToAllRequest(token, company, user, dateRange, dimension, key, parser.allNodes))
