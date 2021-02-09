@@ -23,14 +23,15 @@ class App extends React.Component {
       data: [],
       startDate: "2019-01-01",
       endDate: "2021-01-01",
-      username: "tsaizhihao",
+      username: "",
       companyName: "OBU Eng SC", 
-      APIToken: "Bearer SC:d77896cc47c6c9c918382899ee3d10eca762bf06801267b8c24bbba9012f08bd",
+      APIToken: "",
       errorMessage: "", 
       dimension: "variables/page",
       prefetchedData: "miserables",
       loadPreviousRequest: false,
-      limit: 10
+      limit: 10,
+      loading: false
     }
 
     this.setEventTargetValue = this.setEventTargetValue.bind(this); 
@@ -130,6 +131,7 @@ class App extends React.Component {
   }
 
   async _makeApiRequest() {
+    this.setState({loading: true});
     let missingFieldMessage = ""; 
     if (!this.state.startDate || !this.state.endDate || !this.state.username || 
         !this.state.companyName || !this.state.APIToken) {
@@ -154,7 +156,7 @@ class App extends React.Component {
     console.log("API_DATA");
     console.log(vegaData);
 
-    setTimeout(() => this.setState({data: vegaData, errorMessage: missingFieldMessage}), 500);
+    setTimeout(() => this.setState({data: vegaData, errorMessage: missingFieldMessage, loading: false}), 500);
   }
 
   getDateRange(startTime, endTime) {
@@ -288,7 +290,10 @@ class App extends React.Component {
           </button>
           {loadMore}
           <h3>{this.state.errorMessage}</h3>
-          <div id="Viz-Display-Area"/>
+          {this.state.loading ?
+            <p>Loading...</p> :
+            <div id="Viz-Display-Area"/>
+          }
           <div id="Bottom-Area"/>
       </div>);
     }
