@@ -164,5 +164,10 @@ export default class VizTooltip {
 
 	static removeTooltip(parent, id) {
 		parent.selectAll(`#${id}`).classed('hide', true);
-	}
+  }
+  
+  // ADOBE: This function was added...
+  static setTooltipInCorner(parent, id) {
+    parent.selectAll(`#${id}`).style('top', 0).style('left', 0);
+  }
 }

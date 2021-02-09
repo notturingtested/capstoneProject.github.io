@@ -9,7 +9,8 @@ import vegaL10n from './../vegaL10n/vegaL10n';
 import ForceDirectedMarks from './ForceDirectedMarks';
 import ForceDirectedScales from './ForceDirectedScales';
 import ForceDirectedSignals from './ForceDirectedSignals';
-import ForceDirectedVegaFormatter from './ForceDirectedVegaDataFormatter'; 
+import ForceDirectedVegaFormatter from './ForceDirectedVegaDataFormatter';
+import ForceDirectedTooltip from './ForceDirectedTooltip';  
 import { getConstants } from './../VizConstants';
 
 const { vega, vegaEmbed } = window;
@@ -113,8 +114,8 @@ export default class ForceDirected extends VegaViz {
 		Object.assign(chartOptions, { formattedData, ...aggregateData });
 
 		//TODO: create tooltip handler
-		//const lineTooltip = new LineTooltip(chartOptions);
-		//const tooltipCallback = lineTooltip.show.bind(lineTooltip);
+		const forceDirectedTooltip = new ForceDirectedTooltip(chartOptions);
+		const tooltipCallback = forceDirectedTooltip.show.bind(forceDirectedTooltip);
  
 		//TODO: create a expression for the instance so we can reference options and custom instance functions inside of vega
 		//LineExpressionFunctions.registerChartInstance(vega, this.chartID, chartOptions);
@@ -122,7 +123,7 @@ export default class ForceDirected extends VegaViz {
 		//TODO: embed the vega chart into the dom
 		const vegaSpec = this.getChartConfig(chartOptions);
     //const embedOpts = { renderer: this.renderer, actions: false, tooltip: tooltipCallback };
-    const embedOpts = {}; 
+    const embedOpts = {tooltip: tooltipCallback}; 
 
 		// vegaEmbed will generate the canvas, and add the canvas to vegaContainer
 		// it will also remove all children from vegaContainer beforehand (so it will remove the loading spinner we added)
@@ -206,8 +207,8 @@ export default class ForceDirected extends VegaViz {
   } 
 
 	get padding() {
-    // Hardcoded value for now...
-    return 0;
+    // Hardcoded values for now...
+    return { left: 0, top: 0, right: 0, bottom: 0 };
 	}
 
   /* 
