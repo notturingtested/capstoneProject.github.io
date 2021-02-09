@@ -13,6 +13,4 @@ When you finish your branch, checkout Dev (git checkout Dev)
 Pull Dev (git pull)
 Merge into dev (git merge "branch name")
 Check that everything works, and resolve merge issues
-Checkout main (git checkout main)
-Pull main (git pull)
-Merge into main (git merge "branch name")
+Create pull request, and assign other engineer to review. 
