@@ -89,6 +89,7 @@ export default class ForceDirectedMarks {
       }]
     },
     {
+      "name": "links",
       "type": "path",
       "from": {
         "data": "link-data"
@@ -100,7 +101,7 @@ export default class ForceDirectedMarks {
             "value": "#ccc"
           },
           "strokeWidth": {
-            "value": ".5"
+            "value": .5
           }
           
         }
@@ -116,6 +117,44 @@ export default class ForceDirectedMarks {
         "targetX": "datum.target.x",
         "targetY": "datum.target.y"
       }]
+    },
+    {  
+      "type": "symbol",
+      "from": {"data": "links"},
+      "zindex": 2,
+      "encode": {
+        "enter": {
+          "x": 0,
+          "y": 0,
+          "shape": {"value": "arrow"},
+          "fill": {"value": "red"},
+          "size": {"value": 100}
+        },
+        "update": {
+          "sx": {"field": "datum.source.x"},
+          "sy": {"field": "datum.source.y"},
+          "tx": {"field": "datum.target.x"},
+          "ty": {"field": "datum.target.y"},
+          "r": {"signal": "nodeRadius"}
+        }
+      },
+      "transform": [
+        {
+          "type": "formula",
+          "as": "x",
+          "expr": "datum.sx + (sqrt((datum.tx-datum.sx) * (datum.tx-datum.sx) + (datum.ty-datum.sy) * (datum.ty-datum.sy))-datum.r-sqrt(datum.size)/2)*cos(atan2((datum.ty-datum.sy),(datum.tx-datum.sx)))"
+        },
+        {
+          "type": "formula",
+          "as": "y",
+          "expr": "datum.sy + (sqrt((datum.tx-datum.sx) * (datum.tx-datum.sx) + (datum.ty-datum.sy) * (datum.ty-datum.sy))-datum.r-sqrt(datum.size)/2)*sin(atan2((datum.ty-datum.sy),(datum.tx-datum.sx)))"
+        },
+        {
+          "type": "formula",
+          "as": "angle",
+          "expr": "90 + 180/PI * atan2((datum.ty - datum.sy), (datum.tx - datum.sx))"
+        }
+      ]
     }
   ]);
 
