@@ -6,23 +6,10 @@ export default class ForceDirectedScales {
   getScales(opts) {
 		return _.compact([
       this.getColorScales(opts),
-<<<<<<< HEAD
       this.getVolumeScale(opts)
     ]);
   }
   
-=======
-      {
-        "name": "size",
-        "domain": {"data": "node-data", "field": "volume"},
-        "zero": false,
-        "range": [1, 10000]
-      }
-    ]);
-  }
-  
-
->>>>>>> Dev2
   getColorScales(opts) {
     return {
       name: "color",
@@ -40,9 +27,9 @@ export default class ForceDirectedScales {
   getVolumeScale(opts) {
     return {
       name: "size",
-      domain: {data: "node-data", field: "volume"},
+      domain: {data: "node-data", field: "normalizeVolume"},
       zero: false,
-      range: [1, 10000]
+      range: [999, 1000]
     }
   }
 
