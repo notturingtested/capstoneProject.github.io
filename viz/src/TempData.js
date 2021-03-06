@@ -1906,6 +1906,7 @@ const pages = [
   {
     "name": "node-data",
     "values": [
+      { name: 'Other', group: 0, index: 0, volume: 400357 },
       {
         name: 'Shopping Cart|Cart Details',
         group: 1,
@@ -1934,8 +1935,7 @@ const pages = [
         group: 9,
         index: 9,
         volume: 30249
-      },
-      { name: 'Other', group: 0, index: 0, volume: 400357 }
+      }
     ]
   },
   {

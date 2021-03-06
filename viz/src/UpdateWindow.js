@@ -1,5 +1,6 @@
 import {select} from 'd3-selection'; 
 import embed from 'vega-embed';
+import('./src/charts/ForceDirected/ForceDirected');
 var vega = require('vega'); 
 var d3 = {select: select}; 
 window.d3 = d3; 

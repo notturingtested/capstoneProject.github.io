@@ -39,20 +39,20 @@ export default class ForceDirectedMarks {
             field: "group"
           },
           stroke: {
-            value: "white"
+            value: "black"
           },
           tooltip: {
             signal: "{Name: datum.name, Value: format(datum.volume, ',')}"
           },
           size: {
             scale: "size", 
-            field: "volume"
+            field: "normalizeVolume"
           }
         },
         update: {
-          size: {
-            signal: "datum.volume ? datum.volume / 100 * nodeRadius / 10 : nodeRadius * nodeRadius * 2"
-          },
+          // size: {
+          //   signal: "datum.volume ? datum.volume / 100 * nodeRadius / 10 : nodeRadius * nodeRadius * 2"
+          // },
           cursor: {
             value: "pointer"
           }
@@ -117,12 +117,18 @@ export default class ForceDirectedMarks {
           align: {value: "center"},
           baseline: {value: "middle"},
           fontSize: {value: 12}, 
-          fill: {value: "white"}
+          fill: {value: "black"}
         },
         update: {
-          text: {signal: "substring(datum.datum.name, 0, floor(nodeRadius / 2.5))"},
+          text: {signal: "[substring(datum.datum.name, 0, floor(nodeRadius / 2.5)), getAdjustedVolume(datum.datum.volume)]"},
           x: {signal: "datum.x"},
-          y: {signal: "datum.y"}
+          y: {signal: "datum.y"},
+          tooltip: {
+            signal: "{Name: datum.datum.name, Value: format(datum.datum.volume, ',')}"
+          },
+          cursor: {
+            value: "pointer"
+          }
         }
       }
     }
@@ -138,12 +144,13 @@ export default class ForceDirectedMarks {
       encode: {
         update: {
           stroke: {
-            value: "#ccc"
+            signal: `node ? getHighlightColor(node, datum, getChartOpts('${opts.chartID}')) : "#ccc"`
           },
           strokeWidth: {
-            value: 0.5
+            field: "normalizeValue"
           },
-          tooltip: {value: "{left}"}
+          tooltip: {value: "{left}"},
+          zindex: {signal: `node ? getZIndex(node, datum, getChartOpts('${opts.chartID}')) : 0`}
         }
       },
       transform: [{
@@ -151,7 +158,7 @@ export default class ForceDirectedMarks {
         require: {
           signal: "force"
         },
-        shape: "line",
+        shape: "curve",
         sourceX: "datum.source.x",
         sourceY: "datum.source.y",
         targetX: "datum.target.x",

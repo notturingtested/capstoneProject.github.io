@@ -10,13 +10,14 @@ var temp_dimension = "variables/page";
 
 var temp_company = "OBU Eng SC";
 
-var temp_user = "tsaizhihao";
+var temp_user = "tschen";
 
 exports.getData = getData; 
 
 // getData(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension, 100);
 // apiCaller.getSeqRequest(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension, "Home", "Home").then(data => console.log(data));
 async function getData(token, company, user, dateRange, dimension, limit) {
+    console.log("Calling getData"); 
     let parser  = new apiParser();
     // Simple request to get the top 10
     let data = await apiCaller.getRequest(token, company, user, dateRange, dimension, limit);
@@ -41,6 +42,6 @@ async function getData(token, company, user, dateRange, dimension, limit) {
 
 
 // let test = new apiClass();
-// test.getData(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension).then(res => console.log(res));
+//getData(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension,10).then(res => console.log(res));
 
 // module.exports = apiClass;

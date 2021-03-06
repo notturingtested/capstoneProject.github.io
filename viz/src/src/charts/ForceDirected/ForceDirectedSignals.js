@@ -36,12 +36,12 @@ export default class ForceDirectedSignals {
     return {
       name: "nodeRadius",
       value: 20,
-      bind: {
-        input: "range",
-        min: 30,
-        max: 75,
-        step: 1
-      }
+      // bind: {
+      //   input: "range",
+      //   min: 30,
+      //   max: 75,
+      //   step: 1
+      // }
     }; 
   }
 
@@ -49,12 +49,12 @@ export default class ForceDirectedSignals {
     return {
       name: "nodeCharge",
       value: -30,
-      bind: {
-        input: "range",
-        min: -100,
-        max: 10,
-        step: 1
-      }
+      // bind: {
+      //   input: "range",
+      //   min: -100,
+      //   max: 10,
+      //   step: 1
+      // }
     }; 
   }
 
@@ -62,12 +62,12 @@ export default class ForceDirectedSignals {
     return {
       name: "linkDistance",
       value: 30,
-      bind: {
-        input: "range",
-        min: 5,
-        max: 100,
-        step: 1
-      }
+      // bind: {
+      //   input: "range",
+      //   min: 5,
+      //   max: 100,
+      //   step: 1
+      // }
     }; 
   }
 
@@ -75,9 +75,9 @@ export default class ForceDirectedSignals {
     return {
       name: "static",
       value: true,
-      bind: {
-        "input": "checkbox"
-      }
+      // bind: {
+      //   "input": "checkbox"
+      // }
     }
   }
 
@@ -91,7 +91,7 @@ export default class ForceDirectedSignals {
           update: "false"
         },
         {
-          events: "symbol:mouseover",
+          events: "symbol:mouseover, text:mouseover",
           update: "fix || true"
         },
         {
@@ -124,6 +124,10 @@ export default class ForceDirectedSignals {
       on: [{
         events: "symbol:mouseover",
         update: "fix === true ? item() : node"
+      },
+      {
+        events: "text:mouseover",
+        update: "fix === true ? datum.datum : node"
       }]
     };
   }

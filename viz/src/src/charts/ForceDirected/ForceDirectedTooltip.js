@@ -8,111 +8,158 @@ import { l10n } from './../../analytics/l10nify';
 import vegaL10n from './../vegaL10n/vegaL10n';
 import VizTooltip from './../VizTooltip';
 
-console.log("D3: ");
-console.log(d3); 
-
 export default class ForceDirectedTooltip {
-  constructor(opts) {
+  constructor(opts) { 
     this.opts = opts;
 	}
 
-	show(handler, event, item, value) {
-    console.log(handler); 
-    console.log(event);  
-    console.log(item); 
+  getItemWidth(item) {
+    return item.bounds.x2 - item.bounds.x1;
+  }
+
+  getItemHeight(item) {
+    return item.bounds.y2 - item.bounds.y1;
+  }
+
+  getCx(item) {
+    return (this.getItemWidth(item) / 2) + item.bounds.x1;
+  }
+
+  getCy(item) {
+    return (this.getItemHeight(item) / 2) + item.bounds.y1; 
+  }
+
+  /**
+   * Check if still floating over the previous node. 
+   * @param event - A triggered event (usually called on 'mouseout')
+   * @param currentTooltip - The tooltip that is currently rendered (potentially will be removed)
+   */
+  checkIfOverNode(event, currentTooltip) {
+    // TODO: May need to make adjustments if padding is added later on... 
+    const cx = this.getCx(currentTooltip); 
+    const cy = this.getCy(currentTooltip);  
+    let radius = cx - currentTooltip.bounds.x1; 
+    radius = Math.round(radius * 100) / 100; 
+
+    // Directly over the center of circle in y-direction
+    if ((event.layerY === currentTooltip.cy) && (event.layerX > currentTooltip.bounds.x1) 
+                                             && (event.layerX < currentTooltip.bounds.x2)) {
+      return true; 
+    }
+
+    // Directly over the center of circle in x-direction
+    if ((event.layerX === currentTooltip.cx) && (event.layerY > currentTooltip.bounds.xy) 
+                                             && (event.layerY < currentTooltip.bounds.xy)) {
+      return true; 
+    }
+
+    // Use right triangles to calculate distance 
+    const distanceFromCenter = 
+      Math.sqrt(Math.pow(Math.abs(event.layerX - cx), 2) + Math.pow(Math.abs(event.layerY - cy), 2));
+
+    // event.layerX and event.layerY are slightly imprecise (values are always integers), 
+    // so we subtract a small number below from the radius so the tooltips don't stick 
+    // when the mouseout is triggered directly off the edge of the node. This means that 
+    // the tooltips disappear slightly early, but prevents tooltips from incorrectly persisting. 
+    const RADIUS_OFFSET = 1.5;  
+    return (radius - RADIUS_OFFSET) > distanceFromCenter; 
+  }
+
+	show(handler, event, item, value) { 
 		if (!item) {
 			return;
 		}
+    
+    // Adjust for 'text' mark tooltips. 
+    let isEqualTooltip = false; 
+    if (item.mark.name === "node-text") {
+      isEqualTooltip = this.currentTooltip && this.currentTooltip.datum.name === item.datum.datum.name; 
+      item = item.datum; 
+    }
 
     // Note: Slightly different syntax
     const container = handler._el;
-    console.log(container);
 
 		// when mousing out of a point, remove with a timeout
 		if (event && event.vegaType === 'mouseout') {
-      const removeTimeout = 500;
-      const setInCornerTimeout = 1000; 
-      this.currentTooltip = null;
+      const isStillOverNode = this.checkIfOverNode(event, this.currentTooltip);
+      //console.log("Is still over node:", isStillOverNode);  
 
-      // The tooltip must be not be in the process of removing when moving
-      // the tooltip into the corner of the screen. 
-      this.tooltipRemove = {removingTooltip: false, removedTooltip: false}; 
+      if (!isStillOverNode) {
+        const timeout = 500;
+        this.currentTooltip = null;
 
-			this.tooltipCancelId = setTimeout(() => {
-        this.tooltipRemove.removingTooltip = true; 
-        VizTooltip.removeTooltip(d3.select(container), 'node-tooltip');
-        this.tooltipRemove = {removingTooltip: false, removedTooltip: true}; 
-        setTimeout(() => {
-          // Set the tooltip in the corner if a new tooltip has not 
-          // been selected (prevents the hidden tooltip from covering
-          // one of the nodes in the diagram). 
-          if (!this.removingTooltip && this.removedTooltip) {
-            VizTooltip.setTooltipInCorner(d3.select(container), 'node-tooltip'); 
-          }
-        }, setInCornerTimeout);
-      }, removeTimeout);
-
+        this.tooltipCancelId = setTimeout(() => {
+          VizTooltip.removeTooltip(d3.select(container), 'node-tooltip');
+        }, timeout);
+      }
 			return;
 		}
 
 		//if we are already over this tooltip don't show again
-		if (item === this.currentTooltip) {
+		if (item === this.currentTooltip || isEqualTooltip) {
 			return;
 		} else {
 			this.currentTooltip = item;
 		}
 
-    //ADOBE: create formatter to format tooltip dates below (see LineTooltip.js for more). 
-    
-    const content = this.opts.nodeTooltipContent({ data: item.datum }, {links: item.mark.items });
-
-    if (item) {
-      console.log("Line!"); 
-      console.log(item); 
-    }
-
-		//vega gives us bounding boxes that are relative to the plot area - for the tooltip we need to give it relative to the parent element
-    //so get the origin from vega which is how far offset the chart area is from the top and left borders of the container
-    const origin = event.vega.view()._origin;
-    console.log("origin", origin)
-    console.log(event.vega)
+    //ADOBE: create formatter to format tooltip information below (see LineTooltip.js for more). 
+    const NUM_LINKS_TO_SHOW = 5; 
+    const content = 
+      this.opts.nodeTooltipContent({ data: item.datum }, {links: this.opts.getTopVolumeEdges(item.datum, this.opts.links, NUM_LINKS_TO_SHOW, this.opts)}, this.opts.swatchColors);
 
     //calculate the bbox of the point we are hovering over
-    let x = item.bounds.x1 + origin[0] + this.opts.padding.left;
-    let y = item.bounds.y1 + origin[1] + this.opts.padding.top;
-    let width = item.bounds.x2 - item.bounds.x1;
-    let height = item.bounds.y2 - item.bounds.y1;
-    console.log("--------------------------")
-    console.log("X: ", x); 
-    console.log("Y: ", y); 
-    console.log("Width: ", width); 
-    console.log("Height: ", height); 
+    let x = item.bounds.x1 + this.opts.padding.left;
+    let y = item.bounds.y1 + this.opts.padding.top;
+    let width = this.getItemWidth(item);
+    let height = this.getItemHeight(item);
      
 		//before showing, cancel any existing timeouts
 		//eg if the user moved to another dot before the 'mouseout' timeout is up,
 		//we don't want to remove the tooltip of the next dot
     clearTimeout(this.tooltipCancelId);
-    console.log("Container offsetHeight: " + container.offsetHeight);
-    console.log("Container offsetWidth: " + container.offsetWidth);
+
+    const targetRect = {
+      x,
+      width,
+      y,
+      height,
+    }; 
+
+    const boundaryRect = {
+      y: 0,
+      x: 0,
+      height: container.offsetHeight,
+      width: container.offsetWidth,
+    }; 
+
 		//show the tooltip
-		VizTooltip.showTooltip(
-			{
-				x,
-				width,
-				y,
-				height,
-			},
-			{
-				y: 0,
-				x: 0,
-				height: container.offsetHeight,
-				width: container.offsetWidth,
-			},
-			content,
-			'top',
-			10,
-			d3.select(container),
-			'node-tooltip',
-    ); 
+    // Note: The code below is a workaround. When the first tooltip displays, 
+    // there is no node-tooltip in the DOM, which means the tooltip displays incorrectly
+    // (it displays in the top left corner only with no content information). 
+    // This is due to the tipDiv.node() being null in the VizTooltip class. 
+    // Catching the error allows the initial tooltip code to run, then immediately 
+    // followed by displaying a functioning tooltip. 
+    try {
+      VizTooltip.showTooltip(
+        targetRect,
+        boundaryRect,
+        content,
+        'left',
+        10,
+        d3.select(container),
+        'node-tooltip',
+      ); 
+    } catch(error) {
+      VizTooltip.showTooltip(
+        targetRect,
+        boundaryRect,
+        content,
+        'left',
+        10,
+        d3.select(container),
+        'node-tooltip',
+      );
+    }
   } 
 }

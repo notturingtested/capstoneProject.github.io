@@ -27,9 +27,9 @@ export default class ForceDirectedScales {
   getVolumeScale(opts) {
     return {
       name: "size",
-      domain: {data: "node-data", field: "volume"},
+      domain: {data: "node-data", field: "normalizeVolume"},
       zero: false,
-      range: [1, 10000]
+      range: [200, 1000]
     }
   }
 

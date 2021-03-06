@@ -1,8 +1,15 @@
 import React from 'react';
-//import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 import './App.css';
+//import './workflow-icons.css'; 
+import './flow.scss';
 import './UpdateWindow'; 
 import VegaChartContainer from './src/charts/VegaChartContainer'; 
+import {Button, defaultTheme, Flex, Grid, Item, Picker, Provider, Section, Text, TextField, View} from '@adobe/react-spectrum';
+import WebPage from '@spectrum-icons/workflow/WebPage';
+import GraphBarVertical from '@spectrum-icons/workflow/GraphBarVertical';
+import Curate from '@spectrum-icons/workflow/Curate';
+import {NumberField} from '@react-spectrum/numberfield';
 //import VegaDataFormatter from './src/charts/VegaDataFormatter';  
 
 // TODO: Delete later on...
@@ -19,17 +26,18 @@ class App extends React.Component {
     this.state = {
       isVizPrepped: false,
       data: [],
-      startDate: "2019-01-01",
+      startDate: "2020-10-31",
       endDate: "2021-01-01",
-      username: "tsaizhihao",
+      username: "zacharyyoung",
       companyName: "OBU Eng SC", 
-      APIToken: "Bearer SC:f11f6dc274d9e488d728ff413aa415363654e17ef257aaeb7e78a1535956d451",
+      APIToken: "Bearer SC:931bf9c1d4b3c67d3f41c1ff422c283d4be1d570bb5ce54e5f10620950f04c0b",
       errorMessage: "", 
       dimension: "variables/page",
       prefetchedData: "miserables",
       loadPreviousRequest: false,
       limit: 10,
-      loading: false
+      loading: false,
+      hasBuiltGraph: false
     }
 
     this.setEventTargetValue = this.setEventTargetValue.bind(this); 
@@ -37,6 +45,8 @@ class App extends React.Component {
     this.setIncrememtalLimit = this.setIncrememtalLimit.bind(this); 
     this.setDimension = this.setDimension.bind(this); 
     this.setPrefetchedData = this.setPrefetchedData.bind(this); 
+    this.setIncrememtalLimitValue = this.setIncrememtalLimitValue.bind(this); 
+    this.setValue = this.setValue.bind(this); 
 
     this.expandGraph = this._expandGraph.bind(this);
 
@@ -53,6 +63,8 @@ class App extends React.Component {
       this._displayChart(); 
     }
   }
+
+  //////////////////////////////////////////////////////////////// Start Setters
 
   // Used for <input /> fields.
   setEventTargetValue(event, value) {
@@ -77,13 +89,32 @@ class App extends React.Component {
     this.setEventTargetValue(event, value); 
   }
 
-  setDimension(event) {
-    this.setState({dimension: event.target.value}); 
+  setDimension(dimension) {
+    this.setState({dimension: dimension}); 
   }
 
   setPrefetchedData(event) {
     this.setState({prefetchedData: event.target.value}); 
   }
+  
+  setIncrememtalLimitValue(limit) {
+    const value = parseInt(limit, 10); 
+
+    if (value < 10 || value > 100) {
+      alert("Node count must be between 10 and 100.");
+    }
+    else {
+      console.log("Setting limit: ", value); 
+      this.setState({limit: limit}); 
+      //this.setEventTargetValue(event, value); 
+    }
+  }
+
+  setValue(state, value) {
+    this.setState({[state]: value});
+  }
+
+  //////////////////////////////////////////////////////////////// End Setters
 
   //////////////////////////////////////////////////////////////// Start Mock Functions
 
@@ -119,6 +150,110 @@ class App extends React.Component {
   }
 
   //////////////////////////////////////////////////////////////// End Mock Functions.  
+
+  //////////////////////////////////////////////////////////////// Start opts functions
+
+  _getEdgesFromNode(node, links) {
+    return links.filter(link => link.source.datum.index === node.index); 
+  }
+
+  _sortEdgesByVolume(links) {
+    const compareLinks = function(linkA, linkB) {
+      if (linkA.value < linkB.value) {
+        return 1; 
+      }
+
+      if (linkA.value > linkB.value) {
+        return -1; 
+      }
+
+      return 0; 
+    }
+
+    return links.sort(compareLinks);
+  }
+
+  _getTopVolumeEdges(node, links, numLinks, opts) {
+    const sortedLinks = opts.sortEdges(opts.getEdges(node, links)); 
+    return sortedLinks.slice(0, numLinks);    
+  }
+
+  // Note: This function is similar to the 'pointTooltipContent' in the LineReportlet class. 
+  _nodeTooltipContent({data}, {links}, swatchColors) {
+    // TODO (Zach): add const {data} = d; for website version. 
+
+    let tooltipTopData = 
+      <div className="an-Pathing-tooltip">
+        <div className="an-Pathing-tooltipHeader">
+          <div className="an-Pathing-tooltipTitle">Name: {data.name}</div>
+          <div className="an-Pathing-tooltipLineItem">
+            <div className="an-Pathing-lineItemValues" style={{justifyContent: 'center'}}>
+              <span className="an-Pathing-lineItemValue">Volume: {data.volume}</span>
+            </div>
+          </div>
+        </div>
+      </div>; 
+
+    let tooltipData = tooltipTopData;  
+
+    if (links.length > 0) {
+      tooltipData = 
+        <div>
+          {tooltipTopData}
+          <div className="an-Pathing-tooltipPaths">
+            <div className="an-Pathing-tooltipTitle">Top {links.length} links from this node</div>
+            {links.map((link, i) => { 
+              return (
+                <div key={links[i].target.datum.index} className="an-Pathing-tooltipLineItem">
+                  <div className="an-Pathing-lineItemSwatch" style={{backgroundColor: swatchColors[i]}}>&nbsp;</div>
+                    <div className="an-Pathing-lineItemValues" style={{fontSize: 10, textAlign: 'left'}}>
+                    <span>{link.source.datum.name + "-" + link.target.datum.name + ": " + link.value}</span>
+                  </div>
+                </div>
+              ); 
+            })}  
+          </div>
+        </div>
+    }
+    else {
+      tooltipData = 
+        <div>
+          {tooltipTopData}
+          <div className="an-Pathing-tooltipPaths">
+            <div className="an-Pathing-tooltipTitle">No links from this node</div>
+          </div>
+        </div>
+    }
+
+    const contentDiv = document.createElement('div');
+    
+		ReactDOM.render(
+			tooltipData,
+			contentDiv
+		);
+
+    return contentDiv; 
+  }
+  
+  _getVizOpts() {
+    return {
+      isLegendEnabled: this._fakeIsLegendEnabled,
+      getEdges: this._getEdgesFromNode, 
+      sortEdges: this._sortEdgesByVolume, 
+      swatchColors: [
+        "rgb(38, 192, 199)", "rgb(81, 81, 211)", 
+        "rgb(230, 134, 25)", "rgb(216, 55, 144)",
+        "rgb(144, 141, 250)"
+      ],
+      // Similar to the 'lineTooltipContent' in the 'LineReportlet.js' class.
+      nodeTooltipContent: this._nodeTooltipContent,
+      getTopVolumeEdges: this._getTopVolumeEdges
+    }; 
+  }
+
+  //////////////////////////////////////////////////////////////// End opts functions
+
+  //////////////////////////////////////////////////////////////// Start React/Graph functions
 
   async _buildInitialVisualization() {
     // Wait to import until vega is accessible.
@@ -194,153 +329,323 @@ class App extends React.Component {
     }
   }
 
-  _nodeTooltipContent({data}, {links}) {
-    // TODO (Zach): add const {data} = d; for website version. 
-
-    //console.log("LINK DATA IN NODE!!!");
-    //console.log(links); 
-
-    return (
-      `<div class="an-Pathing-tooltipHeader">
-        <div class="an-Pathing-tooltipTitle">Entry - Name: ${data.name}</div>
-          <div class="an-Pathing-tooltipLineItem">
-            <div class="an-Pathing-lineItemValues">
-              <span class="an-Pathing-lineItemValue">Volume: ${data.volume}</span>
-            </div>
-          </div>
-        </div>
-      </div>`
-    );
-      /*
-    const contentDiv = document.createElement('div');
-    
-		ReactDOM.render(
-			<h1>${data.name}</h1>,
-			contentDiv,
-		);
-
-    return contentDiv;
-    */ 
-  }
-
-  _getVizOpts() {
-    return {
-      isLegendEnabled: this._fakeIsLegendEnabled,
-      // Similar to the 'lineTooltipContent' in the 'LineReportlet.js' class.
-      nodeTooltipContent: this._nodeTooltipContent
-    }; 
-  }
+  //////////////////////////////////////////////////////////////// End React/Graph functions
 
   render() {
-    // Build hard coded colors.
+    //Build hard coded colors.
     const colors = this._buildHardCodedColors();
 
-    let mainCode;
-
-    let loadMore;
-    if (this.state.loadPreviousRequest) {
-      loadMore = (<div/>);
-    } else {
-      loadMore = (
-        <button onClick={() => this._expandGraph()}>
-          Load More Nodes
-        </button>
-      )
-    }
-
-    if (!this.state.isVizPrepped) {
-      mainCode = (
-        <button onClick={() => this._buildInitialVisualization()}>
-            Load visualization
-        </button>
-      );
-    } else {
-      mainCode = (
-        <div>
-          <VegaChartContainer
-            ref={this._chartContainerRef}
-            colors={colors}
-            data={this.state.data}
-            type='ForceDirected'
-            opts={this._getVizOpts()}
-          />
-          {!this.state.loadPreviousRequest ? 
-            <form>
-              <label>Start Date:
-                <input type="date" id="start" name="startDate"
-                        value={this.state.startDate}
-                        onChange={this.setEventTargetValue}
-                        min="2018-01-01" max="2021-12-31"/>
-              </label>
-              <br/>
-              <label>End Date:
-                <input type="date" id="end" name="endDate"
-                        value={this.state.endDate}
-                        onChange={this.setEventTargetValue}
-                        min="2018-01-01" max="2021-12-31"/>
-              </label>
-              <br/>
-              <label>Company Name:
-                <input type="text" name="companyName"
-                        value={this.state.comapnyName}
-                        defaultValue="OBU Eng SC"
-                        onChange={this.setEventTargetValue}/>
-              </label>
-              <br/>
-              <label>User Name:
-                <input type="text" id="name" name="userName"
-                        value={this.state.name}
-                        defaultValue="tsaizhihao"
-                        onChange={this.setEventTargetValue}/>
-              </label>
-              <br/>
-              <label>API token:
-                <input type="password" id="APIToken" name="APIToken"
-                        minLength="0" required value={this.state.APIToken} onChange={this.setEventTargetValue}/>
-              </label>
-              <br/>
-              <label>Dimension:
-                <select value={this.state.value} id="dimension" onChange={this.setDimension}>
-                  <option value="variables/page">Page</option>
-                  <option value="variables/browser">Browser</option>
-                  <option value="variables/product">Product</option>
-                  <option value="variables/daterangeday">Day</option>
-                  <option value="variables/evar9">Gender</option>
-                </select>
-              </label>
-              <br/>
-              <label>Number Nodes:
-                <input type="number" name="limit" value={this.state.limit} id="limit" onChange={this.setIncrememtalLimit}/>
-              </label>
-            </form> : 
-            <label>Dimension:
-            <select value={this.state.value} id="prefetched visualization" onChange={this.setPrefetchedData}>
-              <option value="miserables">Les Miserables</option>
-              <option value="pages">Page</option>
-            </select>
-          </label>} 
-          <button onClick={() => this._toggleRequestType()}>
-            {this.state.loadPreviousRequest ? "Load from Dynamic Request" : "Load from Pre-Fetched Request"}
-          </button>
-          <button onClick={() => {!this.state.loadPreviousRequest ? this._makeApiRequest() : this._setCorrespondingPrefetchedData()}}>
-            Build Graph
-          </button>
-          {loadMore}
-          <h3>{this.state.errorMessage}</h3>
-          {this.state.loading ?
-            <p>Loading...</p> :
-            <div id="Viz-Display-Area"/>
-          }
-          <div id="Bottom-Area"/>
-      </div>);
-    }
-
     return (
-      <div className="App">
-        <h1>Force Directed Layout by Vega</h1>
-        {mainCode}
-      </div>
+      <Provider theme={defaultTheme}>
+        <VegaChartContainer
+          ref={this._chartContainerRef}
+          colors={colors}
+          data={this.state.data}
+          type='ForceDirected'
+          opts={this._getVizOpts()}
+        />
+        <Flex direction="column"> 
+          <View height="size-550" backgroundColor="gray-900">
+            <Flex height="size-550" direction="row" justifyContent="end" alignItems="center"> 
+              <TextField
+                  marginEnd="size-200"
+                  label="Company"
+                  labelPosition="side"
+                  placeholder="Good Co."
+                  width="size-2000"
+                  value={this.state.companyName}
+                  onChange={value => this.setValue("companyName", value)}
+              />
+              <TextField
+                  marginEnd="size-200"
+                  label="Username"
+                  labelPosition="side"
+                  placeholder="Cletus"
+                  width="size-2000"
+                  value={this.state.username}
+                  onChange={value => this.setValue("username", value)}
+                />
+              <TextField
+                  marginEnd="size-200"
+                  label="Auth Token"
+                  labelPosition="side"
+                  placeholder="123"
+                  width="size-2000"
+                  value={this.state.APIToken}
+                  onChange={value => this.setValue("APIToken", value)}
+              />
+            </Flex>
+          </View>
+          <View height="size-700" backgroundColor="gray-100">
+            <Flex height="size-700" direction="row" alignItems="center">
+              <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
+            </Flex>
+          </View>
+          <Flex height="size-6000" direction="row" alignItems="center">
+            <View marginTop="6%" height="122%" borderEndWidth="thin" borderEndColor="gray-900" backgroundColor="gray-100" width="size-800"> 
+              <Flex height="100%" flex="column" width="size-800" direction="column" alignItems="center">
+                <View marginTop="size-100"><WebPage label="Webpage"/></View>
+                <View marginTop="size-100"><GraphBarVertical label="Graph Bar Vertical"/></View>
+                <View marginTop="size-100"><Curate label="Curate"/></View>
+              </Flex>
+            </View>
+            <View marginTop="6%" height="122%" borderEndWidth="thin" borderEndColor="gray-900" backgroundColor="gray-50" width="size-3000"> 
+              <Flex flex="column" height="100%" width="size-3000" direction="column" alignItems="center">
+                <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
+                <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
+                <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
+              </Flex>
+            </View>
+            <View backgroundColor="gray-50" flex> 
+              <Flex flex="column" height="size-6000" direction="column" alignItems="center" justifyContent="center">
+                <View marginTop="10%" borderRadius="small" borderWidth="thick" borderColor="blue-500" gridArea="demo" width="90%" height="120%" backgroundColor="gray-50" marginStart="size-50">
+                  <Flex direction="column" height="100%">
+                    <View height="size-550" borderBottomWidth="thin" borderBottomColor="gray-900">
+                      <Flex marginStart="size-150" marginEnd="size-150" height="100%" direction="row" justifyContent="space-between" alignItems="center">
+                        <View>
+                          Force Directed
+                        </View>
+                        <Flex direction="row">
+                          <View>
+                            X
+                          </View>
+                        </Flex>
+                      </Flex>
+                    </View>
+                    <View height="size-675" borderBottomWidth="thin" borderBottomColor="gray-900">
+                      <Flex marginStart="size-150" marginEnd="size-150" height="100%" direction="row" justifyContent="end" alignItems="center">
+                        <View>
+                          <form>
+                            <label>Start Date:
+                              <input type="date" id="start" name="startDate"
+                                      value={this.state.startDate}
+                                      onChange={this.setEventTargetValue}
+                                      min="2018-01-01" max="2021-12-31"/>
+                            </label>
+                            <br/>
+                            <label>End Date:
+                              <input type="date" id="end" name="endDate"
+                                    
+                                      value={this.state.endDate}
+                                      onChange={this.setEventTargetValue}
+                                      min="2018-01-01" max="2021-12-31"/>
+                            </label>
+                            <br/>
+                          </form>
+                        </View>
+                      </Flex>
+                    </View>
+                    <Flex height="size-5000" width="90%" alignItems="center" justifyContent="center" alignSelf="center">
+                      <View height="90%" width="100%" borderWidth="thin" borderColor="gray-900">
+                        { 
+                          !this.state.hasBuiltGraph ? 
+                            <Flex height="100%" direction="column" alignItems="center" justifyContent="center"> 
+                            <View marginTop="size-125">Select a Dimension Below</View>
+                            <Picker label="dimension" onSelectionChange={this.setDimension}>
+                              <Item key="variables/page">Page</Item>
+                              <Item key="variables/browser">Browser</Item>
+                              <Item key="variables/product">Product</Item>
+                              <Item key="variables/daterangeday">Day</Item>
+                              <Item key="variables/evar9">Gender</Item>
+                            </Picker>
+                            <NumberField label="Nodes" defaultValue={this.state.limit} maxValue="50" minValue="10" onChange={this.setIncrememtalLimitValue} />
+                            <Button onPress={() => {this.setState({hasBuiltGraph: true}); this._makeApiRequest()}} marginTop="size-150" variant="primary">Build</Button> 
+                            </Flex> : null
+                        }
+                        <div style={{marginTop: '0', height: '100%', width: '95%'}} id="Viz-Display-Area"/>
+                      </View>
+                    </Flex>
+                  </Flex>
+                </View>
+              </Flex>
+            </View>
+          </Flex>
+        </Flex>
+         {/* <Grid
+            areas={['left lspace dimension rspace graphArea rspacegraph']}
+            columns={['size-400', 'size-10','size-2000','size-100','50fr','size-100']}
+            rows={['auto']}
+            height="size-5000"
+            gap="size-0">
+          <Grid gridArea="left"
+              areas={['square', 'slope', 'face', 'rest']}
+              columns={['size-400', 'size-400','size-400','size-400']}
+              rows={['size-400', 'size-400','size-400','auto']}
+              height="size-5000"
+              gap="size-0">
+            <View backgroundColor="gray-50" gridArea="square">sq</View>
+            <View backgroundColor="gray-50" gridArea="slope">sl</View>
+            <View backgroundColor="gray-50" gridArea="face">fa</View>
+            <View backgroundColor="gray-50" gridArea="rest"/>
+          </Grid>
+          <View backgroundColor="gray-300" gridArea="lspace"/>
+          <View backgroundColor="gray-50" gridArea="dimension"/>
+          <View backgroundColor="gray-300" gridArea="rspace"/>
+          <Grid gridArea="graphArea"
+                areas={['topspacegraph','insidegraph','bottomspacegraph']}
+                columns={['auto']}
+                rows={['size-100','auto','size-300']}
+                height="size-5000"
+                gap="size-0">
+            <View backgroundColor="gray-300" gridArea="topspacegraph"/>
+            <View backgroundColor="gray-50" gridArea="insidegraph">
+              <Grid
+                    areas={['a b c']}
+                    columns={['size-2000','auto','size-1000']}
+                    rows={['size-200','size-200','size-200']}
+                    height="size-200"
+                    gap="size-0">
+                <View backgroundColor="gray-50" gridArea="a">Force Directed</View>
+                <View backgroundColor="gray-50" gridArea="b"/>
+                <View backgroundColor="gray-50" gridArea="c">Geometrix</View>
+              </Grid>
+              <Flex direction="column" gap="size-0">
+                <View backgroundColor="gray-300" height="size-10"/>
+              </Flex>
+              <Grid
+                  areas={['a b']}
+                  columns={['auto','size-1000']}
+                  rows={['size-400','size-400']}
+                  height="size-400"
+                  gap="size-0">
+                <View backgroundColor="gray-50" gridArea="a"/>
+                <View backgroundColor="gray-50" gridArea="b">stuff</View>
+              </Grid>
+              <Flex direction="column" gap="size-0">
+                <View backgroundColor="gray-200" height="size-10"/>
+              </Flex>
+              <Flex direction="column" gap="size-0">
+                <View backgroundColor="gray-50" height="size-1000"/>
+              </Flex>
+              <Grid
+                  areas={['a b c']}
+                  columns={['size-1000','auto','size-1000']}
+                  rows={['auto']}
+                  height="size-3000"
+                  gap="size-0">
+                <View backgroundColor="gray-50" gridArea="a"/>
+                <View backgroundColor="gray-50" gridArea="b">
+                  //where graph goes
+                </View>
+                <View backgroundColor="gray-50" gridArea="c"/>
+              </Grid>
+            </View>
+            <View backgroundColor="gray-300" gridArea="bottomspacegraph"/>
+          </Grid>
+          <View backgroundColor="gray-300" gridArea="rspacegraph"/>
+        </Grid> */}
+      </Provider>
     );
+
+    //Build hard coded colors.
+    // const colors = this._buildHardCodedColors();
+
+    // let mainCode;
+
+    // let loadMore;
+    // if (this.state.loadPreviousRequest) {
+    //   loadMore = (<div/>);
+    // } else {
+    //   loadMore = (
+    //     <button onClick={() => this._expandGraph()}>
+    //       Load More Nodes
+    //     </button>
+    //   )
+    // }
+
+    // if (!this.state.isVizPrepped) {
+    //   mainCode = (
+    //     <button onClick={() => this._buildInitialVisualization()}>
+    //         Load visualization
+    //     </button>
+    //   );
+    // } else {
+    //   mainCode = (
+    //     <div>
+    //       <VegaChartContainer
+    //         ref={this._chartContainerRef}
+    //         colors={colors}
+    //         data={this.state.data}
+    //         type='ForceDirected'
+    //         opts={this._getVizOpts()}
+    //       />
+    //       {!this.state.loadPreviousRequest ? 
+    //         <form>
+    //           <label>Start Date:
+    //             <input type="date" id="start" name="startDate"
+    //                     value={this.state.startDate}
+    //                     onChange={this.setEventTargetValue}
+    //                     min="2018-01-01" max="2021-12-31"/>
+    //           </label>
+    //           <br/>
+    //           <label>End Date:
+    //             <input type="date" id="end" name="endDate"
+    //                     value={this.state.endDate}
+    //                     onChange={this.setEventTargetValue}
+    //                     min="2018-01-01" max="2021-12-31"/>
+    //           </label>
+    //           <br/>
+    //           <label>Company Name:
+    //             <input type="text" name="companyName"
+    //                     value={this.state.comapnyName}
+    //                     defaultValue="OBU Eng SC"
+    //                     onChange={this.setEventTargetValue}/>
+    //           </label>
+    //           <br/>
+    //           <label>User Name:
+    //             <input type="text" id="name" name="userName"
+    //                     value={this.state.name}
+    //                     defaultValue={this.state.username}
+    //                     onChange={this.setEventTargetValue}/>
+    //           </label>
+    //           <br/>
+    //           <label>API token:
+    //             <input type="password" id="APIToken" name="APIToken"
+    //                     minLength="0" required value={this.state.APIToken} onChange={this.setEventTargetValue}/>
+    //           </label>
+    //           <br/>
+    //           <label>Dimension:
+    //             <select value={this.state.value} id="dimension" onChange={this.setDimension}>
+    //               <option value="variables/page">Page</option>
+    //               <option value="variables/browser">Browser</option>
+    //               <option value="variables/product">Product</option>
+    //               <option value="variables/daterangeday">Day</option>
+    //               <option value="variables/evar9">Gender</option>
+    //             </select>
+    //           </label>
+    //           <br/>
+    //           <label>Number Nodes:
+    //             <input type="number" name="limit" value={this.state.limit} id="limit" onChange={this.setIncrememtalLimit}/>
+    //           </label>
+    //         </form> : 
+    //         <label>Dimension:
+    //         <select value={this.state.value} id="prefetched visualization" onChange={this.setPrefetchedData}>
+    //           <option value="miserables">Les Miserables</option>
+    //           <option value="pages">Page</option>
+    //         </select>
+    //       </label>} 
+    //       <button onClick={() => this._toggleRequestType()}>
+    //         {this.state.loadPreviousRequest ? "Load from Dynamic Request" : "Load from Pre-Fetched Request"}
+    //       </button>
+    //       <button onClick={() => {!this.state.loadPreviousRequest ? this._makeApiRequest() : this._setCorrespondingPrefetchedData()}}>
+    //         Build Graph
+    //       </button>
+    //       {loadMore}
+    //       <h3>{this.state.errorMessage}</h3>
+    //       {this.state.loading ?
+    //         <p>Loading...</p> :
+    //         <div id="Viz-Display-Area"/>
+    //       }
+    //       <div id="Bottom-Area"/>
+    //   </div>);
+    // }
+
+    // return (
+    //   <div className="App">
+    //     <h1>Force Directed Layout by Vega</h1>
+    //     {mainCode}
+    //   </div>
+    // );
   }
 }
 

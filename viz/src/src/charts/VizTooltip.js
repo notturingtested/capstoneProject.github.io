@@ -9,7 +9,7 @@ export default class VizTooltip {
 	 * @param parent - The parent the tooltip will be attached to
 	 */
 	static showTooltip(targetRect, boundaryRect, content, orientation, padding, parent, id) {
-		let tipDiv = parent.selectAll(`#${id}`).data([targetRect]);
+		let tipDiv = parent.selectAll(`#${id}`).data([targetRect]); 
 
 		targetRect.cx = targetRect.cx || targetRect.x + targetRect.width / 2;
 		targetRect.cy = targetRect.cy || targetRect.y + targetRect.height / 2;
@@ -159,15 +159,10 @@ export default class VizTooltip {
 
 		tipDivEnter.style('top', top + 'px').style('left', left + 'px');
 
-		tipDiv.style('top', top + 'px').style('left', left + 'px');
+		tipDiv.style('top', top + 'px').style('left', left + 'px'); 
 	}
 
 	static removeTooltip(parent, id) {
 		parent.selectAll(`#${id}`).classed('hide', true);
-  }
-  
-  // ADOBE: This function was added...
-  static setTooltipInCorner(parent, id) {
-    parent.selectAll(`#${id}`).style('top', 0).style('left', 0);
   }
 }

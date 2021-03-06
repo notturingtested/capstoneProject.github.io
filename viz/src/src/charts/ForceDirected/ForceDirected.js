@@ -10,10 +10,13 @@ import ForceDirectedMarks from './ForceDirectedMarks';
 import ForceDirectedScales from './ForceDirectedScales';
 import ForceDirectedSignals from './ForceDirectedSignals';
 import ForceDirectedVegaFormatter from './ForceDirectedVegaDataFormatter';
+import ForceDirectedExpressionFunctions from './ForceDirectedExpressionFunctions'; 
 import ForceDirectedTooltip from './ForceDirectedTooltip';  
 import { getConstants } from './../VizConstants';
 
 const { vega, vegaEmbed } = window;
+//register custom functions with vega
+ForceDirectedExpressionFunctions.registerStaticExpressions(vega);
 /**
  * Parent class:
  * this.el - the current element storing the view.
@@ -100,7 +103,7 @@ export default class ForceDirected extends VegaViz {
 		}
 
     // ADOBE: Handle localization here. 
-  
+
 		const chartOptions = {
 			...opts,
 			height: this.el.clientHeight,
@@ -109,16 +112,19 @@ export default class ForceDirected extends VegaViz {
 			chartID: this.chartID,
 		};
 
+    console.log("Height", this.el.clientHeight); 
+
     //TODO: format the data for vega (right now it simply returns the data passed in). 
 		const { formattedData, aggregateData } = ForceDirectedVegaFormatter.format(chartOptions);
 		Object.assign(chartOptions, { formattedData, ...aggregateData });
 
 		//TODO: create tooltip handler
 		const forceDirectedTooltip = new ForceDirectedTooltip(chartOptions);
+    chartOptions.links = chartOptions.formattedData[1].name === 'link-data' ? chartOptions.formattedData[1].values : chartOptions.formattedData[0].values; 
 		const tooltipCallback = forceDirectedTooltip.show.bind(forceDirectedTooltip);
  
 		//TODO: create a expression for the instance so we can reference options and custom instance functions inside of vega
-		//LineExpressionFunctions.registerChartInstance(vega, this.chartID, chartOptions);
+		ForceDirectedExpressionFunctions.registerChartInstance(vega, this.chartID, chartOptions);
 
 		//TODO: embed the vega chart into the dom
 		const vegaSpec = this.getChartConfig(chartOptions);
@@ -188,6 +194,7 @@ export default class ForceDirected extends VegaViz {
   */ 
 
 	getChartConfig(opts) {
+    console.log("Padding: ", opts.padding);
 		let config = {
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       // Fit within width/height, with width/height being the total.
