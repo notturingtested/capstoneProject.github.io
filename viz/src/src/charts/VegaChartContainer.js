@@ -72,7 +72,7 @@ export default class VegaChartContainer extends React.Component {
 
 		// We need to use the full data set so that the colors stay "bound" to the right series.
 		this.props.data.forEach((dataSet, i) => {
-			const currentColor = this.props.colors[i % this.props.colors.length];
+			const currentColor = this.props.colors[this.props.colors.length];
 
 			if (this.isDataSetEnabled(dataSet)) {
 				// Only add the current color to the final array we need if the data set is enabled.

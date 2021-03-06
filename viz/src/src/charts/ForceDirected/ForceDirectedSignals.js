@@ -33,51 +33,60 @@ export default class ForceDirectedSignals {
   }
 
   getNodeRadius(opts) {
+    const bind = {
+      input: "range",
+      min: 30,
+      max: 75,
+      step: 1
+    }; 
+
     return {
       name: "nodeRadius",
       value: 20,
-      // bind: {
-      //   input: "range",
-      //   min: 30,
-      //   max: 75,
-      //   step: 1
-      // }
+      bind: opts.allowSignalBinds ? bind : null
     }; 
   }
 
   getNodeCharge(opts) {
+    const bind = {
+        input: "range",
+        min: -100,
+        max: 10,
+        step: 1
+      }
+
     return {
       name: "nodeCharge",
       value: -30,
-      // bind: {
-      //   input: "range",
-      //   min: -100,
-      //   max: 10,
-      //   step: 1
-      // }
+      bind: opts.allowSignalBinds ? bind : null
     }; 
   }
 
   getLinkDistance(opts) {
+    const bind = {
+      input: "range",
+      min: 5,
+      max: 100,
+      step: 1
+    }
+
     return {
       name: "linkDistance",
       value: 30,
-      // bind: {
-      //   input: "range",
-      //   min: 5,
-      //   max: 100,
-      //   step: 1
-      // }
+      bind: opts.allowSignalBinds ? bind : null
     }; 
   }
 
   getStatic(opts) {
+    console.log("Allow signal binds", opts.allowSignalBinds); 
+    const bind = {
+      "input": "checkbox"
+    }
+    
     return {
       name: "static",
       value: true,
-      // bind: {
-      //   "input": "checkbox"
-      // }
+      bind: opts.allowSignalBinds ? bind : null
     }
   }
 
