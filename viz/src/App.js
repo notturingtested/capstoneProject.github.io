@@ -29,7 +29,7 @@ class App extends React.Component {
       endDate: "2021-01-01",
       username: "zacharyyoung",
       companyName: "OBU Eng SC", 
-      APIToken: "Bearer SC:65d78f23d380692470c5a694f8e65b6cdcaecd472b2db9252d01dcf6953041d8",
+      APIToken: "Bearer SC:fd42dbc25c8878d9f64a6e4e13d85e397e584ad29457d1ea558de864aebf9334",
       errorMessage: "", 
       dimension: "variables/page",
       prefetchedData: "miserables",
@@ -341,8 +341,10 @@ class App extends React.Component {
             opts={this._getVizOpts()}
           />
           <Flex direction="column"> 
-            <View height="size-550" backgroundColor="gray-900">
-              <Flex height="size-550" direction="row" justifyContent="end" alignItems="center"> 
+
+            {/* Top Row */}
+            <View height="size-600" backgroundColor="gray-900">
+              <Flex height="size-600" direction="row" justifyContent="end" alignItems="center"> 
                 <Button onClick={() => this.setState({showPanel: !this.state.showPanel})}>
                   Hide Panel
                 </Button>
@@ -375,34 +377,44 @@ class App extends React.Component {
                 />
               </Flex>
             </View>
-            <View height="size-700" backgroundColor="gray-100">
-              <Flex height="size-700" direction="row" alignItems="center">
-                <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
+
+            {/* BYU Demo Row */}
+            <View height="size-800" backgroundColor="gray-50" borderBottomWidth="thin" borderBottomColor="gray-300">
+              <Flex height="size-800" direction="row" alignItems="center">
+                <View gridArea="demo" marginStart="size-100">BYU DEMO</View>
               </Flex>
             </View>
+
+            {/* Main Row */}
             <Flex height="size-6000" direction="row" alignItems="center">
-              <View marginTop="6%" height="122%" borderEndWidth="thin" borderEndColor="gray-900" backgroundColor="gray-100" width="size-800"> 
-                <Flex height="100%" flex="column" width="size-800" direction="column" alignItems="center">
+
+              {/* Fake Task Bar */}
+              <View height="size-6000" borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-700"> 
+                <Flex height="100%" flex="column" width="size-700" direction="column" alignItems="center">
                   <View marginTop="size-100"><WebPage label="Webpage"/></View>
                   <View marginTop="size-100"><GraphBarVertical label="Graph Bar Vertical"/></View>
                   <View marginTop="size-100"><Curate label="Curate"/></View>
                 </Flex>
               </View>
-              <View marginTop="6%" height="122%" borderEndWidth="thin" borderEndColor="gray-900" backgroundColor="gray-50" width="size-3000"> 
+
+               {/* Specific Node Section */}
+              <View height="size-6000" borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-3000"> 
                 <Flex flex="column" height="100%" width="size-3000" direction="column" alignItems="center">
                   <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
                   <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
                   <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
                 </Flex>
               </View>
-              <View backgroundColor="gray-50" flex> 
+
+              {/* Main Panel Section */}
+              <View backgroundColor="gray-150" flex> 
                 <Flex flex="column" height="size-6000" direction="column" alignItems="center" justifyContent="center">
-                  <View marginTop="10%" borderRadius="small" borderWidth="thick" borderColor="blue-500" gridArea="demo" width="90%" height="120%" backgroundColor="gray-50" marginStart="size-50">
+                  <View marginTop="size-800" borderRadius="medium" borderWidth="thick" borderColor="blue-500" gridArea="demo" width="96.5%" height="120%" backgroundColor="gray-50" marginStart="size-50">
                     <Flex direction="column" height="100%">
-                      <View height="size-550" borderBottomWidth="thin" borderBottomColor="gray-900">
-                        <Flex marginStart="size-150" marginEnd="size-150" height="100%" direction="row" justifyContent="space-between" alignItems="center">
-                          <View>
-                            Force Directed
+                      <View height="size-700" borderBottomWidth="thin" borderBottomColor="gray-300">
+                        <Flex marginStart="size-250" marginEnd="size-150" height="100%" direction="row" justifyContent="space-between" alignItems="center">
+                          <View fontSize="font-size-500">
+                            <strong>Force Directed Panel</strong>
                           </View>
                           <Flex direction="row">
                             <View>
@@ -411,7 +423,7 @@ class App extends React.Component {
                           </Flex>
                         </Flex>
                       </View>
-                      <View height="size-675" borderBottomWidth="thin" borderBottomColor="gray-900">
+                      <View height="size-675" borderBottomWidth="thin" borderBottomColor="gray-300">
                         <Flex marginStart="size-150" marginEnd="size-150" height="100%" direction="row" justifyContent="end" alignItems="center">
                           <View>
                             <form>
@@ -435,12 +447,16 @@ class App extends React.Component {
                         </Flex>
                       </View>
                       <Flex height="size-5000" width="90%" alignItems="center" justifyContent="center" alignSelf="center">
-                        <View height="90%" width="100%" borderWidth="thin" borderColor="gray-900">
+                        <View height="90%" width="100%" borderWidth="thin" borderColor="gray-300">
+                          {/*<Flex direction="row" alignItems="center" marginStart="size-100" marginTop="size-100">
+                            <View height="size-100" width="size-100" borderRadius="medium" backgroundColor="blue-400" />
+                            <View marginStart="size-200">Force Directed</View>
+                            </Flex>*/}
                           { 
                             !this.state.hasBuiltGraph ? 
                               <Flex height="100%" direction="column" alignItems="center" justifyContent="center"> 
-                              <View marginTop="size-125">Select a Dimension Below</View>
-                              <Picker label="dimension" onSelectionChange={this.setDimension}>
+                              <View>Customize the Graph Below</View>
+                              <Picker label="Dimension" onSelectionChange={this.setDimension}>
                                 <Item key="variables/page">Page</Item>
                                 <Item key="variables/browser">Browser</Item>
                                 <Item key="variables/product">Product</Item>
@@ -448,7 +464,7 @@ class App extends React.Component {
                                 <Item key="variables/evar9">Gender</Item>
                               </Picker>
                               <NumberField label="Nodes" defaultValue={this.state.limit} maxValue="50" minValue="10" onChange={this.setIncrememtalLimitValue} />
-                              <Button onPress={() => {this.setState({hasBuiltGraph: true}); this._makeApiRequest()}} marginTop="size-150" variant="primary">Build</Button> 
+                              <Button onPress={() => {this.setState({hasBuiltGraph: true}); this._makeApiRequest()}} marginTop="size-250" variant="primary">Build</Button> 
                               </Flex> : null
                           }
                           <div style={{marginTop: '0', height: '100%', width: '95%'}} id="Viz-Display-Area"/>
@@ -459,6 +475,7 @@ class App extends React.Component {
                 </Flex>
               </View>
             </Flex>
+            <View height="size-6000" backgroundColor="gray-150" /> 
           </Flex>
         </Provider>
       );
