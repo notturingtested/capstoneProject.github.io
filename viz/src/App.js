@@ -27,17 +27,17 @@ class App extends React.Component {
       data: [],
       startDate: "2020-10-31",
       endDate: "2021-01-01",
-      username: "zacharyyoung",
+      username: "widnat",
       companyName: "OBU Eng SC", 
-      APIToken: "Bearer SC:fd42dbc25c8878d9f64a6e4e13d85e397e584ad29457d1ea558de864aebf9334",
-      errorMessage: "", 
+      APIToken: "Bearer SC:49091583d172ed2d249d29a75f073511f90fa60d8bbc79aa1aef7ca4f224ff3e",
+      errorMessage: "",
       dimension: "variables/page",
       prefetchedData: "miserables",
       loadPreviousRequest: false,
       limit: 10,
       loading: false,
       hasBuiltGraph: false,
-      showPanel: false
+      showPanel: true
     }
 
     this.setEventTargetValue = this.setEventTargetValue.bind(this); 
@@ -386,19 +386,23 @@ class App extends React.Component {
             </View>
 
             {/* Main Row */}
-            <Flex height="size-6000" direction="row" alignItems="center">
+            <Flex direction="row">
 
               {/* Fake Task Bar */}
-              <View height="size-6000" borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-700"> 
-                <Flex height="100%" flex="column" width="size-700" direction="column" alignItems="center">
+              <View borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-700">
+                <Flex height="size-0" flex="column" width="size-700" direction="column">
+                </Flex>
+                <Flex height="size-300" flex="column" width="size-700" direction="column" alignItems="center">
                   <View marginTop="size-100"><WebPage label="Webpage"/></View>
                   <View marginTop="size-100"><GraphBarVertical label="Graph Bar Vertical"/></View>
                   <View marginTop="size-100"><Curate label="Curate"/></View>
                 </Flex>
+                <Flex height="size-6000" flex="column" width="size-700" direction="column"/>
+                <Flex height="size-3000" flex="column" width="size-700" direction="column"/>
               </View>
 
                {/* Specific Node Section */}
-              <View height="size-6000" borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-3000"> 
+              <View borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-3000">
                 <Flex flex="column" height="100%" width="size-3000" direction="column" alignItems="center">
                   <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
                   <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
@@ -408,9 +412,10 @@ class App extends React.Component {
 
               {/* Main Panel Section */}
               <View backgroundColor="gray-150" flex> 
-                <Flex flex="column" height="size-6000" direction="column" alignItems="center" justifyContent="center">
-                  <View marginTop="size-800" borderRadius="medium" borderWidth="thick" borderColor="blue-500" gridArea="demo" width="96.5%" height="120%" backgroundColor="gray-50" marginStart="size-50">
-                    <Flex direction="column" height="100%">
+                <Flex flex="column" direction="column" alignItems="center" justifyContent="center">
+                  <View marginTop="size-300" borderRadius="medium" borderWidth="thick" borderColor="blue-500"
+                        gridArea="demo" width="96.5%" backgroundColor="gray-50" marginStart="size-50">
+                    <Flex direction="column">
                       <View height="size-700" borderBottomWidth="thin" borderBottomColor="gray-300">
                         <Flex marginStart="size-250" marginEnd="size-150" height="100%" direction="row" justifyContent="space-between" alignItems="center">
                           <View fontSize="font-size-500">
@@ -446,15 +451,16 @@ class App extends React.Component {
                           </View>
                         </Flex>
                       </View>
-                      <Flex height="size-5000" width="90%" alignItems="center" justifyContent="center" alignSelf="center">
-                        <View height="90%" width="100%" borderWidth="thin" borderColor="gray-300">
+                      <Flex height="size-600" flex="column" width="size-700" direction="column"/>
+                      <Flex height="size-6000" width="90%" alignItems="center" justifyContent="center" alignSelf="center">
+                        <View height="size-6000" width="100%" borderWidth="thin" borderColor="gray-300">
                           {/*<Flex direction="row" alignItems="center" marginStart="size-100" marginTop="size-100">
                             <View height="size-100" width="size-100" borderRadius="medium" backgroundColor="blue-400" />
                             <View marginStart="size-200">Force Directed</View>
                             </Flex>*/}
                           { 
                             !this.state.hasBuiltGraph ? 
-                              <Flex height="100%" direction="column" alignItems="center" justifyContent="center"> 
+                              <Flex height="size-6000" direction="column" alignItems="center" justifyContent="center">
                               <View>Customize the Graph Below</View>
                               <Picker label="Dimension" onSelectionChange={this.setDimension}>
                                 <Item key="variables/page">Page</Item>
@@ -470,12 +476,13 @@ class App extends React.Component {
                           <div style={{marginTop: '0', height: '100%', width: '95%'}} id="Viz-Display-Area"/>
                         </View>
                       </Flex>
+                      <Flex height="size-600" flex="column" width="size-700" direction="column"/>
                     </Flex>
                   </View>
                 </Flex>
               </View>
             </Flex>
-            <View height="size-6000" backgroundColor="gray-150" /> 
+            <View height="size-25" backgroundColor="gray-150" />
           </Flex>
         </Provider>
       );
