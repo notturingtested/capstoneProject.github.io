@@ -417,7 +417,8 @@ class App extends React.Component {
                         gridArea="demo" width="96.5%" backgroundColor="gray-50" marginStart="size-50">
                     <Flex direction="column">
                       <View height="size-700" borderBottomWidth="thin" borderBottomColor="gray-300">
-                        <Flex marginStart="size-250" marginEnd="size-150" height="100%" direction="row" justifyContent="space-between" alignItems="center">
+                        <Flex marginStart="size-250" marginEnd="size-150" height="100%" direction="row"
+                              justifyContent="space-between" alignItems="center">
                           <View fontSize="font-size-500">
                             <strong>Force Directed Panel</strong>
                           </View>
@@ -451,7 +452,7 @@ class App extends React.Component {
                           </View>
                         </Flex>
                       </View>
-                      <Flex height="size-600" flex="column" width="size-700" direction="column"/>
+                      <Flex height="size-600" flex="column" direction="column"/>
                       <Flex height="size-6000" width="90%" alignItems="center" justifyContent="center" alignSelf="center">
                         <View height="size-6000" width="100%" borderWidth="thin" borderColor="gray-300">
                           {/*<Flex direction="row" alignItems="center" marginStart="size-100" marginTop="size-100">
@@ -460,7 +461,7 @@ class App extends React.Component {
                             </Flex>*/}
                           { 
                             !this.state.hasBuiltGraph ? 
-                              <Flex height="size-6000" direction="column" alignItems="center" justifyContent="center">
+                              <Flex height="size-6000" width="auto" direction="column" alignItems="center" justifyContent="center">
                               <View>Customize the Graph Below</View>
                               <Picker label="Dimension" onSelectionChange={this.setDimension}>
                                 <Item key="variables/page">Page</Item>
@@ -476,7 +477,7 @@ class App extends React.Component {
                           <div style={{marginTop: '0', height: '100%', width: '95%'}} id="Viz-Display-Area"/>
                         </View>
                       </Flex>
-                      <Flex height="size-600" flex="column" width="size-700" direction="column"/>
+                      <Flex height="size-600" flex="column" direction="column"/>
                     </Flex>
                   </View>
                 </Flex>
