@@ -10,6 +10,8 @@ import WebPage from '@spectrum-icons/workflow/WebPage';
 import GraphBarVertical from '@spectrum-icons/workflow/GraphBarVertical';
 import Curate from '@spectrum-icons/workflow/Curate';
 import {NumberField} from '@react-spectrum/numberfield';
+import {CheckboxGroup} from '@adobe/react-spectrum';
+import {Checkbox} from '@adobe/react-spectrum';
 //import VegaDataFormatter from './src/charts/VegaDataFormatter';  
 
 // TODO: Delete later on...
@@ -29,14 +31,14 @@ class App extends React.Component {
       endDate: "2021-01-01",
       username: "widnat",
       companyName: "OBU Eng SC", 
-      APIToken: "Bearer SC:49091583d172ed2d249d29a75f073511f90fa60d8bbc79aa1aef7ca4f224ff3e",
+      APIToken: "Bearer SC:39fcd3d0ad207e7ea318695c5616564485553ed8c6ec201a1cb642754ed4f528",
       errorMessage: "",
       dimension: "variables/page",
       prefetchedData: "miserables",
       loadPreviousRequest: false,
       limit: 10,
       loading: false,
-      hasBuiltGraph: false,
+      hasBuiltGraph: true,
       showPanel: true
     }
 
@@ -51,6 +53,8 @@ class App extends React.Component {
     this.expandGraph = this._expandGraph.bind(this);
 
     vega.expressionFunction("loadMore", this.expandGraph);
+
+    this._makeApiRequest();
 
     document.body.className = 'light-theme'; 
   }
@@ -389,26 +393,45 @@ class App extends React.Component {
             <Flex direction="row">
 
               {/* Fake Task Bar */}
-              <View borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-700">
+              <View borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-600">
                 <Flex height="size-0" flex="column" width="size-700" direction="column">
                 </Flex>
-                <Flex height="size-300" flex="column" width="size-700" direction="column" alignItems="center">
-                  <View marginTop="size-100"><WebPage label="Webpage"/></View>
+                <Flex height="size-300" flex="column" width="size-600" direction="column" alignItems="center">
+                  <View marginTop="size-100"><WebPage label="Webpage" /></View>
                   <View marginTop="size-100"><GraphBarVertical label="Graph Bar Vertical"/></View>
                   <View marginTop="size-100"><Curate label="Curate"/></View>
                 </Flex>
-                <Flex height="size-6000" flex="column" width="size-700" direction="column"/>
-                <Flex height="size-3000" flex="column" width="size-700" direction="column"/>
+                <Flex height="size-6000" flex="column" width="size-600" direction="column"/>
+                <Flex height="size-3000" flex="column" width="size-600" direction="column"/>
               </View>
 
                {/* Specific Node Section */}
-              <View borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-3000">
-                <Flex flex="column" height="100%" width="size-3000" direction="column" alignItems="center">
-                  <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
-                  <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
-                  <View gridArea="demo" marginStart="size-50">BYU DEMO</View>
+              <View backgroundColor="gray-50" width="size-300"/>
+              <View backgroundColor="gray-50" width="size-2400">
+                <Flex height="size-1600" width="auto" direction="column">
+                  <Flex height="size-100" direction="column"/>
+                  <Picker label="Dimension" placeholder="Select a Dimension" onSelectionChange={this.setDimension}>
+                    <Item key="variables/page">Page</Item>
+                    <Item key="variables/browser">Browser</Item>
+                    <Item key="variables/product">Product</Item>
+                    <Item key="variables/daterangeday">Day</Item>
+                    <Item key="variables/evar9">Gender</Item>
+                  </Picker>
+                  <NumberField label="Nodes" defaultValue={this.state.limit} maxValue="50" minValue="10" onChange={this.setIncrememtalLimitValue} />
+                </Flex>
+                <Flex flex="column" height="size-4000" width="size-2400" direction="column">
+                  {/*
+                  we could do a loop and show up to 30 nodes. we will have the showing nodes checked.
+                  they can check or uncheck as they wish.
+                  */}
+                  <CheckboxGroup label="SELECT SPECIFIC NODES">
+                    <Checkbox value="Other">Soccer</Checkbox>
+                    <Checkbox value="Shopping">Baseball</Checkbox>
+                    <Checkbox value="Homes">Basketball</Checkbox>
+                  </CheckboxGroup>
                 </Flex>
               </View>
+              <View borderEndWidth="thin" borderEndColor="gray-300" backgroundColor="gray-50" width="size-300"/>
 
               {/* Main Panel Section */}
               <View backgroundColor="gray-150" flex> 
@@ -431,6 +454,12 @@ class App extends React.Component {
                       </View>
                       <View height="size-675" borderBottomWidth="thin" borderBottomColor="gray-300">
                         <Flex marginStart="size-150" marginEnd="size-150" height="100%" direction="row" justifyContent="end" alignItems="center">
+                          <Button
+                              onPress={() => {this.setState({hasBuiltGraph: true}); this._makeApiRequest()}}
+                              variant="primary">
+                            Build
+                          </Button>
+                          <Flex width="size-600" flex="column" direction="column"/>
                           <View>
                             <form>
                               <label>Start Date:
@@ -459,21 +488,6 @@ class App extends React.Component {
                             <View height="size-100" width="size-100" borderRadius="medium" backgroundColor="blue-400" />
                             <View marginStart="size-200">Force Directed</View>
                             </Flex>*/}
-                          { 
-                            !this.state.hasBuiltGraph ? 
-                              <Flex height="size-6000" width="auto" direction="column" alignItems="center" justifyContent="center">
-                              <View>Customize the Graph Below</View>
-                              <Picker label="Dimension" onSelectionChange={this.setDimension}>
-                                <Item key="variables/page">Page</Item>
-                                <Item key="variables/browser">Browser</Item>
-                                <Item key="variables/product">Product</Item>
-                                <Item key="variables/daterangeday">Day</Item>
-                                <Item key="variables/evar9">Gender</Item>
-                              </Picker>
-                              <NumberField label="Nodes" defaultValue={this.state.limit} maxValue="50" minValue="10" onChange={this.setIncrememtalLimitValue} />
-                              <Button onPress={() => {this.setState({hasBuiltGraph: true}); this._makeApiRequest()}} marginTop="size-250" variant="primary">Build</Button> 
-                              </Flex> : null
-                          }
                           <div style={{marginTop: '0', height: '100%', width: '95%'}} id="Viz-Display-Area"/>
                         </View>
                       </Flex>
