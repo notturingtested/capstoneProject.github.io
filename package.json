@@ -9,7 +9,18 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.0"
+    "web-vitals": "^1.1.0",
+    "d3": "^6.5.0",
+    "node-fetch": "^2.6.1",
+    "@adobe/react-spectrum": "^3.8.0",
+    "@react-spectrum/numberfield": "^3.0.0-alpha.1",
+    "@spectrum-icons/workflow": "^3.2.0",
+    "d3-selection": "^2.0.0",
+    "moment": "^2.29.1",
+    "node-sass": "^4.14.1",
+    "vega": "^5.17.0",
+    "vega-embed": "^6.13.0",
+    "vega-lite": "^4.17.0"
   },
   "scripts": {
     "start": "react-scripts start",

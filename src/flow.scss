@@ -1,0 +1,174 @@
+$drop-indicator-color: var(--spectrum-global-color-blue-700);
+$drop-indicator-width: 3px;
+$guide-padding: 5px;
+
+.an-Flow {
+	height: 100%;
+
+	.an-Chart {
+		height: 100%;
+
+		.pathing-cv-info-wrapper {
+			height: 100%;
+
+			.pathing-cv-wrapper {
+				height: 100%;
+			}
+		}
+	}
+
+	.drop-target-title {
+		text-align: center;
+		margin-bottom: 20px;
+		font-weight: 100;
+		font-size: 15px;
+	}
+
+	.pill-groups {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin-bottom: 30px;
+
+		.flow-pill-container {
+			margin: 0 29px;
+		}
+
+		.or-container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			.or {
+				font-weight: 300;
+				font-size: 11px;
+			}
+
+			//this is just to make the pill groups line up correctly when resizing a subPanel
+			&:last-child > .or {
+				visibility: hidden;
+			}
+		}
+	}
+}
+
+.an-Pathing-tooltip {
+	font-weight: 100;
+}
+.an-Pathing-tooltipTitle {
+	text-transform: uppercase;
+	font-size: 85%;
+	color: darken(white, 20%);
+}
+.an-Pathing-lineItemValues {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0.25em;
+}
+.an-Pathing-lineItemPercentage {
+	color: darken(white, 20%);
+}
+
+.an-Pathing-lineItemSwatch {
+	width: 33px;
+	height: 3px;
+}
+
+.an-Pathing-dropTargetListener {
+	position: absolute;
+}
+.an-Pathing-dropTargetIndicator {
+	border: 3px solid var(--spectrum-global-color-gray-900);
+}
+
+.an-Pathing-dropTargetListener.add-icon,
+.an-Pathing-dropTargetIndicator.replace-icon {
+	border: 3px solid $drop-indicator-color;
+}
+
+.an-Pathing-addOntoIndicator-left {
+	border-left: 0px;
+}
+
+.an-Pathing-addOntoIndicator-right {
+	border-right: 0px;
+}
+
+.an-Pathing-addOntoIndicator-left.drop-indicator-left {
+	border-right: 0px;
+	border-top: 0px;
+	border-bottom: 0px;
+}
+
+.an-Pathing-addOntoIndicator-right.drop-indicator-right {
+	border-left: 0px;
+	border-top: 0px;
+	border-bottom: 0px;
+}
+
+.an-Pathing-focusFlag .node-title {
+	font-weight: 800;
+}
+
+.an-Pathing-tooltipPaths {
+	.an-Pathing-tooltipTitle {
+		margin-bottom: 0.25em;
+	}
+}
+
+.add-icon.an-Pathing-addOntoIndicator.drop-indicator-right {
+	&[data-text] {
+		&:before {
+			top: calc(0px - (#{$guide-padding} * 2) - 0.8125rem);
+		}
+		&:after {
+			top: calc(0px - (#{$guide-padding} * 2) - 0.8125rem - 4px);
+			right: -$drop-indicator-width;
+		}
+	}
+}
+
+.add-icon.an-Pathing-addOntoIndicator.drop-indicator-left {
+	&[data-text] {
+		&:before {
+			right: $drop-indicator-width;
+			top: calc(0px - (#{$guide-padding} * 2) - 0.8125rem);
+		}
+		&:after {
+			top: calc(0px - (#{$guide-padding} * 2) - 0.8125rem - 4px);
+			right: $drop-indicator-width;
+		}
+	}
+}
+
+// .replace-icon.an-Pathing-addOntoIndicator.generic-drop-indicator {
+
+// }
+
+.add-icon.an-Pathing-addOntoIndicator.drop-indicator-left {
+	padding-right: 10px;
+	background: none;
+}
+
+.add-icon.an-Pathing-addOntoIndicator.drop-indicator-right {
+	padding-left: 10px;
+	background: none;
+}
+
+.an-Pathing-dropTargetListener.an-Pathing-dropTargetIndicator.replace-icon.generic-drop-indicator {
+	box-sizing: initial;
+}
+
+.flow-options-include-repeats-container {
+	display: flex;
+	flex-direction: row;
+
+	//let repeat instances check box not wrap - using !imporant because of a lot of classes of specificity with popover styles
+	div.coral-Checkbox > label {
+		max-width: 80% !important;
+	}
+}
+
+.an-flow-settings-flow-container {
+	display: flex;
+	align-items: center;
+}

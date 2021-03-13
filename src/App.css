@@ -1,38 +1,309 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#Viz-Display-Area {
+  height: 90vh; 
+  width: 60vw; 
+  margin-top: 5vh;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#Bottom-Area {
+  height: 10vh; 
+  width: 100%; 
+}
+
+/* START ADOBE CSS CODE */ 
+body.dark-theme {
+	/* Spectrum Colors */
+	/* Label Colors */
+	--spectrum-global-color-celery-400: rgb(68, 181, 86);
+	--spectrum-global-color-celery-500: rgb(75, 195, 95);
+	--spectrum-global-color-celery-600: rgb(81, 210, 103);
+	--spectrum-global-color-celery-700: rgb(88, 224, 111);
+	--spectrum-global-color-chartreuse-400: rgb(133, 208, 68);
+	--spectrum-global-color-chartreuse-500: rgb(142, 222, 73);
+	--spectrum-global-color-chartreuse-600: rgb(155, 236, 84);
+	--spectrum-global-color-chartreuse-700: rgb(163, 248, 88);
+	--spectrum-global-color-yellow-400: rgb(223, 191, 0);
+	--spectrum-global-color-yellow-500: rgb(237, 204, 0);
+	--spectrum-global-color-yellow-600: rgb(250, 217, 0);
+	--spectrum-global-color-yellow-700: rgb(255, 226, 46);
+	--spectrum-global-color-magenta-400: rgb(216, 55, 144);
+	--spectrum-global-color-magenta-500: rgb(207, 62, 220);
+	--spectrum-global-color-magenta-600: rgb(217, 81, 229);
+	--spectrum-global-color-magenta-700: rgb(245, 107, 183);
+	--spectrum-global-color-fuchsia-400: rgb(192, 56, 204);
+	--spectrum-global-color-fuchsia-500: rgb(177, 48, 189);
+	--spectrum-global-color-fuchsia-600: rgb(162, 40, 173);
+	--spectrum-global-color-fuchsia-700: rgb(227, 102, 239);
+	--spectrum-global-color-purple-400: rgb(146, 86, 217);
+	--spectrum-global-color-purple-500: rgb(157, 100, 225);
+	--spectrum-global-color-purple-600: rgb(168, 115, 233);
+	--spectrum-global-color-purple-700: rgb(180, 131, 240);
+	--spectrum-global-color-indigo-400: rgb(103, 103, 236);
+	--spectrum-global-color-indigo-500: rgb(117, 117, 241);
+	--spectrum-global-color-indigo-600: rgb(130, 130, 246);
+	--spectrum-global-color-indigo-700: rgb(144, 144, 250);
+	--spectrum-global-color-seafoam-400: rgb(27, 149, 154);
+	--spectrum-global-color-seafoam-500: rgb(32, 163, 168);
+	--spectrum-global-color-seafoam-600: rgb(35, 178, 184);
+	--spectrum-global-color-seafoam-700: rgb(38, 192, 199);
+
+	/* Semantic Colors */
+	--spectrum-global-color-red-400: rgb(227, 72, 80);
+	--spectrum-global-color-red-500: rgb(236, 91, 98);
+	--spectrum-global-color-red-600: rgb(247, 109, 116);
+	--spectrum-global-color-red-700: rgb(255, 123, 130);
+	--spectrum-global-color-orange-400: rgb(230, 134, 25);
+	--spectrum-global-color-orange-500: rgb(242, 148, 35);
+	--spectrum-global-color-orange-600: rgb(249, 164, 63);
+	--spectrum-global-color-orange-700: rgb(255, 181, 91);
+	--spectrum-global-color-green-400: rgb(45, 157, 120);
+	--spectrum-global-color-green-500: rgb(51, 171, 132);
+	--spectrum-global-color-green-600: rgb(57, 185, 144);
+	--spectrum-global-color-green-700: rgb(63, 200, 156);
+	--spectrum-global-color-blue-400: rgb(38, 128, 235);
+	--spectrum-global-color-blue-500: rgb(55, 142, 240);
+	--spectrum-global-color-blue-600: rgb(75, 156, 245);
+	--spectrum-global-color-blue-700: rgb(90, 169, 250);
+	--spectrum-global-color-gray-50: rgb(37, 37, 37);
+	--spectrum-global-color-gray-75: rgb(47, 47, 47);
+	--spectrum-global-color-gray-100: rgb(50, 50, 50);
+	--spectrum-global-color-gray-200: rgb(62, 62, 62);
+	--spectrum-global-color-gray-300: rgb(74, 74, 74);
+	--spectrum-global-color-gray-400: rgb(90, 90, 90);
+	--spectrum-global-color-gray-500: rgb(110, 110, 110);
+	--spectrum-global-color-gray-600: rgb(144, 144, 144);
+	--spectrum-global-color-gray-700: rgb(185, 185, 185);
+	--spectrum-global-color-gray-800: rgb(227, 227, 227);
+	--spectrum-global-color-gray-900: rgb(255, 255, 255);
+	--spectrum-global-color-gray-dark-theme-100: #323232;
+
+	--gray-background-heading-color: var(--spectrum-global-color-gray-300);
+	--aa-axis-grid-color: var(--spectrum-global-color-gray-300);
+	--aa-axis-label-color: var(--spectrum-global-color-gray-700);
+	--aa-legend-bg: var(--spectrum-global-color-gray-50);
+	--aa-viz-bg: var(--spectrum-global-color-gray-50);
+	--aa-viz-border: none;
+	--aa-dragdrop-border-color: var(--spectrum-global-color-blue-500);
+	--an-panel-color: var(--spectrum-global-color-gray-50);
+
+	/* Component Colors */
+	--dimension: var(--spectrum-global-color-orange-400);
+	--metric: var(--spectrum-global-color-celery-400);
+	--event: var(--spectrum-global-color-celery-400);
+	--segment: var(--spectrum-global-color-blue-400);
+	--function: var(--spectrum-global-color-gray-800);
+	--daterange: var(--spectrum-global-color-fuchsia-600);
+	--granularity: var(--spectrum-global-color-fuchsia-600);
+	--attribution-model: var(--spectrum-global-color-fuchsia-400);
+	--dimension-item: var(--spectrum-global-color-yellow-400);
+	--generic-item: var(--spectrum-global-color-yellow-400);
+	--other-item: var(--spectrum-global-color-gray-800);
+	--chart: var(--spectrum-global-color-seafoam-400);
+	--panel: var(--spectrum-global-color-seafoam-400);
+	--select: var(--spectrum-global-color-gray-200);
+	--hover: var(--spectrum-global-color-gray-100);
+	--panel-select: var(--spectrum-global-color-blue-500);
+}
+
+body.light-theme {
+	/* Spectrum Colors */
+	/* Label Colors */
+	--spectrum-global-color-celery-400: rgb(68, 181, 86);
+	--spectrum-global-color-celery-500: rgb(61, 167, 78);
+	--spectrum-global-color-celery-600: rgb(55, 153, 71);
+	--spectrum-global-color-celery-700: rgb(49, 139, 64);
+	--spectrum-global-color-chartreuse-400: rgb(133, 208, 68);
+	--spectrum-global-color-chartreuse-500: rgb(124, 195, 63);
+	--spectrum-global-color-chartreuse-600: rgb(115, 181, 58);
+	--spectrum-global-color-chartreuse-700: rgb(106, 168, 52);
+	--spectrum-global-color-yellow-400: rgb(223, 191, 0);
+	--spectrum-global-color-yellow-500: rgb(210, 178, 0);
+	--spectrum-global-color-yellow-600: rgb(196, 166, 0);
+	--spectrum-global-color-yellow-700: rgb(183, 153, 0);
+	--spectrum-global-color-magenta-400: rgb(216, 55, 144);
+	--spectrum-global-color-magenta-500: rgb(206, 39, 131);
+	--spectrum-global-color-magenta-600: rgb(188, 28, 116);
+	--spectrum-global-color-magenta-700: rgb(174, 14, 102);
+	--spectrum-global-color-fuchsia-400: rgb(192, 56, 204);
+	--spectrum-global-color-fuchsia-500: rgb(177, 48, 189);
+	--spectrum-global-color-fuchsia-600: rgb(162, 40, 173);
+	--spectrum-global-color-fuchsia-700: rgb(147, 33, 158);
+	--spectrum-global-color-purple-400: rgb(146, 86, 217);
+	--spectrum-global-color-purple-500: rgb(134, 76, 204);
+	--spectrum-global-color-purple-600: rgb(122, 66, 191);
+	--spectrum-global-color-purple-700: rgb(111, 56, 177);
+	--spectrum-global-color-indigo-400: rgb(103, 103, 236);
+	--spectrum-global-color-indigo-500: rgb(92, 92, 224);
+	--spectrum-global-color-indigo-600: rgb(81, 81, 211);
+	--spectrum-global-color-indigo-700: rgb(70, 70, 198);
+	--spectrum-global-color-seafoam-400: rgb(27, 149, 154);
+	--spectrum-global-color-seafoam-500: rgb(22, 135, 140);
+	--spectrum-global-color-seafoam-600: rgb(15, 121, 125);
+	--spectrum-global-color-seafoam-700: rgb(9, 108, 111);
+
+	/* Semantic Colors */
+	--spectrum-global-color-red-400: rgb(227, 72, 80);
+	--spectrum-global-color-red-500: rgb(215, 55, 63);
+	--spectrum-global-color-red-600: rgb(201, 37, 45);
+	--spectrum-global-color-red-700: rgb(187, 18, 26);
+	--spectrum-global-color-orange-400: rgb(230, 134, 25);
+	--spectrum-global-color-orange-500: rgb(218, 123, 17);
+	--spectrum-global-color-orange-600: rgb(203, 111, 16);
+	--spectrum-global-color-orange-700: rgb(189, 100, 13);
+	--spectrum-global-color-green-400: rgb(45, 157, 120);
+	--spectrum-global-color-green-500: rgb(38, 142, 108);
+	--spectrum-global-color-green-600: rgb(18, 128, 92);
+	--spectrum-global-color-green-700: rgb(16, 113, 84);
+	--spectrum-global-color-blue-400: rgb(38, 128, 235);
+	--spectrum-global-color-blue-500: rgb(20, 115, 230);
+	--spectrum-global-color-blue-600: rgb(13, 102, 208);
+	--spectrum-global-color-blue-700: rgb(9, 90, 186);
+	--spectrum-global-color-gray-50: rgb(255, 255, 255);
+	--spectrum-global-color-gray-75: rgb(250, 250, 250);
+	--spectrum-global-color-gray-100: rgb(245, 245, 245);
+	--spectrum-global-color-gray-200: rgb(234, 234, 234);
+	--spectrum-global-color-gray-300: rgb(225, 225, 225);
+	--spectrum-global-color-gray-400: rgb(202, 202, 202);
+	--spectrum-global-color-gray-500: rgb(179, 179, 179);
+	--spectrum-global-color-gray-600: rgb(142, 142, 142);
+	--spectrum-global-color-gray-700: rgb(110, 110, 110);
+	--spectrum-global-color-gray-800: rgb(75, 75, 75);
+	--spectrum-global-color-gray-900: rgb(44, 44, 44);
+	--spectrum-global-color-gray-dark-theme-100: #323232;
+
+	--gray-background-heading-color: var(--spectrum-global-color-gray-300);
+	--aa-axis-grid-color: var(--spectrum-global-color-gray-300);
+	--aa-axis-label-color: var(--spectrum-global-color-gray-700);
+	--aa-legend-bg: var(--spectrum-global-color-gray-50);
+	--aa-viz-bg: var(--spectrum-global-color-gray-50);
+	--aa-viz-border: none;
+	--aa-dragdrop-border-color: var(--spectrum-global-color-blue-500);
+	--an-panel-color: var(--spectrum-global-color-gray-50);
+
+	/* Component Colors */
+	--dimension: var(--spectrum-global-color-orange-400);
+	--metric: var(--spectrum-global-color-celery-400);
+	--event: var(--spectrum-global-color-celery-400);
+	--segment: var(--spectrum-global-color-blue-400);
+	--function: var(--spectrum-global-color-gray-800);
+	--daterange: var(--spectrum-global-color-fuchsia-600);
+	--granularity: var(--spectrum-global-color-fuchsia-600);
+	--attribution-model: var(--spectrum-global-color-fuchsia-400);
+	--dimension-item: var(--spectrum-global-color-yellow-400);
+	--generic-item: var(--spectrum-global-color-yellow-400);
+	--other-item: var(--spectrum-global-color-gray-800);
+	--chart: var(--spectrum-global-color-seafoam-400);
+	--panel: var(--spectrum-global-color-seafoam-400);
+	--select: var(--spectrum-global-color-gray-200);
+	--hover: var(--spectrum-global-color-gray-100);
+	--panel-select: var(--spectrum-global-color-blue-500);
+}
+
+.dv-tooltip {
+	position: absolute;
+	background-color: var(--spectrum-global-color-gray-700);
+	opacity: 0.95;
+	padding: 8px;
+	min-width: 100px;
+	max-width: 180px;
+	color: var(--spectrum-global-color-gray-75);
+	z-index: 10000;
+	font-family: adobe-clean-condensed, Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	pointer-events: none;
+	word-wrap: break-word;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-touch-callout: none;
+	-webkit-transition: opacity 0.1s ease-in;
+	-moz-transition: opacity 0.1s ease-in;
+	-ms-transition: opacity 0.1s ease-in;
+	-o-transition: opacity 0.1s ease-in;
+	transition: opacity 0.1s ease-in;
+
+	/** needed to prevent animation flickering in Chrome **/
+	/** For reference go to that site where the stacks overfloweth with wisdom about how to prevent-flicker-on-webkit-transition-of-webkit-transform **/
+	-webkit-backface-visibility: hidden;
+}
+
+.dv-tooltip.hide {
+	opacity: 0;
+	-webkit-transition: opacity 0.4s 0.4s ease-in;
+	-moz-transition: opacity 0.4s 0.4s ease-in;
+	-ms-transition: opacity 0.4s 0.4s ease-in;
+	-o-transition: opacity 0.4s 0.4s ease-in;
+	transition: opacity 0.4s 0.4s ease-in;
+}
+
+.dv-tooltip .notch {
+	position: absolute;
+	margin: 0;
+	opacity: 0.95;
+	padding: 0;
+	width: 0;
+	height: 0;
+}
+
+.dv-tooltip.bottom .notch {
+	bottom: 100%;
+	left: 10px;
+	border-top: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid var(--spectrum-global-color-gray-700);
+}
+
+.dv-tooltip.right .notch {
+	top: 10px;
+	right: 100%;
+	border-left: 0;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-right: 5px solid var(--spectrum-global-color-gray-700);
+}
+
+.dv-tooltip.left .notch {
+	top: 10px;
+	left: 100%;
+	border-right: 0;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-left: 5px solid var(--spectrum-global-color-gray-700);
+}
+
+.dv-tooltip.top .notch {
+	top: 100%;
+	left: 10px;
+	border-bottom: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid var(--spectrum-global-color-gray-700);
+}
+
+.an-Pathing-tooltip {
+	font-weight: 100;
+}
+
+.an-Pathing-tooltipHeader {
+  margin-bottom:15px
+}
+
+.an-Pathing-tooltipTitle {
+	text-transform: uppercase;
+	font-size: 85%;
+	color: darken(white, 20%);
+}
+.an-Pathing-lineItemValues {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0.25em;
 }
