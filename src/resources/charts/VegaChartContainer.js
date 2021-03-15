@@ -100,7 +100,6 @@ export default class VegaChartContainer extends React.Component {
 
 		if (!this.viz) {
       this.viz = ChartFactory.create(this.props.type, chartOpts);
-      console.log(this.viz);
 		}
 		await this.viz.draw(chartOpts);
 	}

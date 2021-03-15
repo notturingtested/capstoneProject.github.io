@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 //import { d3, isNumeric } from '@analytics/core';
 import { d3, isNumeric } from './../../analytics/core';
 
-import vegaL10n from './../vegaL10n/vegaL10n';
 import VizTooltip from './../VizTooltip';
 
 // Expression Functions
@@ -70,8 +69,7 @@ export default class LineExpressionFunctions {
     });
 
     vega.expressionFunction('checkValue', (value) => {
-      console.log("Checked Value:", value); 
-      return null; 
+      return null;
     });
   }
 }

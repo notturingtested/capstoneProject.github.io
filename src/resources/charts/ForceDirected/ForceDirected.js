@@ -5,7 +5,6 @@ import guid from './../../analytics/guid';
 
 import ChartFactory from './../ChartFactory';
 import VegaViz from '../VegaViz';
-import vegaL10n from './../vegaL10n/vegaL10n';
 import ForceDirectedMarks from './ForceDirectedMarks';
 import ForceDirectedScales from './ForceDirectedScales';
 import ForceDirectedSignals from './ForceDirectedSignals';
@@ -112,8 +111,6 @@ export default class ForceDirected extends VegaViz {
 			chartID: this.chartID,
 		};
 
-    console.log("Height", this.el.clientHeight); 
-
     //TODO: format the data for vega (right now it simply returns the data passed in). 
 		const { formattedData, aggregateData } = ForceDirectedVegaFormatter.format(chartOptions);
 		Object.assign(chartOptions, { formattedData, ...aggregateData });
@@ -194,7 +191,6 @@ export default class ForceDirected extends VegaViz {
   */ 
 
 	getChartConfig(opts) {
-    console.log("Padding: ", opts.padding);
 		let config = {
       $schema: 'https://vega.github.io/schema/vega/v5.json',
       // Fit within width/height, with width/height being the total.

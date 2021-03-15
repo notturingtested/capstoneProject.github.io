@@ -1,7 +1,7 @@
 // import d3
 let d3 = require("d3");
 
-module.exports = class parser {
+export default class parser {
   constructor() {
       this.simpleMap = new Map();
       this.count = 0;
@@ -13,8 +13,8 @@ module.exports = class parser {
           nodes: [],
           links: []
       };
-  }    
-  
+  }
+
 
   parse(res) {
 
@@ -48,8 +48,8 @@ module.exports = class parser {
 
     // normalize the nodes
     this.normalizeFunction(this.jsonObj.nodes);
-  }    
-  
+  }
+
   parseToJson(data) {
       let res = [];
       // toOther is the sum of everything besides top limit

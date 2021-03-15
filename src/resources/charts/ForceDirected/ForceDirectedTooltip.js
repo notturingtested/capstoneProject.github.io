@@ -1,11 +1,8 @@
 // Keep imports below.
 //import { d3 } from '@analytics/core';
-//import { l10n } from '@analytics/l10nify';
 
 import d3 from './../../d3.js';
-import { l10n } from './../../analytics/l10nify'; 
 
-import vegaL10n from './../vegaL10n/vegaL10n';
 import VizTooltip from './../VizTooltip';
 
 export default class ForceDirectedTooltip {

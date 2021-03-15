@@ -42,7 +42,7 @@ class App extends React.Component {
 
     this.setEventTargetValue = this.setEventTargetValue.bind(this); 
     this.setEventTargetValueNum = this.setEventTargetValueNum.bind(this); 
-    this.setIncrememtalLimit = this.setIncrememtalLimit.bind(this); 
+    this.setIncrementalLimit = this.setIncrementalLimit.bind(this);
     this.setDimension = this.setDimension.bind(this); 
     this.setPrefetchedData = this.setPrefetchedData.bind(this); 
     this.setIncrememtalLimitValue = this.setIncrememtalLimitValue.bind(this); 
@@ -73,7 +73,7 @@ class App extends React.Component {
     this.setState({[name]: stateValue});
   }
 
-  setIncrememtalLimit(event) {
+  setIncrementalLimit(event) {
     const value = parseInt(event.target.value, 10); 
 
     if (value < 10 || value > 100) {
@@ -271,8 +271,8 @@ class App extends React.Component {
     }
 
     const dateRange = this.getDateRange(this.state.startDate, this.state.endDate); 
-    let apiData = await apiCaller.getData(this.state.APIToken, this.state.companyName, this.state.username, dateRange, this.state.dimension, this.state.limit); 
-    let objApiData = JSON.parse(apiData); 
+    let apiData = await apiCaller.getData(this.state.APIToken, this.state.companyName, this.state.username, dateRange, this.state.dimension, this.state.limit);
+    let objApiData = JSON.parse(apiData);
 
     const vegaData = [{
       "name": "node-data",
@@ -283,8 +283,6 @@ class App extends React.Component {
       "values": objApiData.links
     }];
 
-    console.log("API_DATA");
-    console.log(vegaData);
 
     setTimeout(() => this.setState({data: vegaData, errorMessage: missingFieldMessage, loading: false}), 500);
   }
@@ -532,7 +530,7 @@ class App extends React.Component {
               </label>
               <br/>
               <label>Number Nodes:
-                <input type="number" name="limit" value={this.state.limit} id="limit" onChange={this.setIncrememtalLimit}/>
+                <input type="number" name="limit" value={this.state.limit} id="limit" onChange={this.setIncrementalLimit}/>
               </label>
             </form> : 
             <label>Dimension:

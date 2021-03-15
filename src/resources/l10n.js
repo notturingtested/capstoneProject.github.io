@@ -170,4 +170,4 @@ class L10nConfig {
 let l10nConfig = new L10nConfig();
 const l10n = l10nConfig.translate;
 
-export { l10n as default, L10nConfig };
+// export { l10n as default, L10nConfig };

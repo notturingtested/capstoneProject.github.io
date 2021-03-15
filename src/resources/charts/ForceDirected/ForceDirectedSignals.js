@@ -78,7 +78,6 @@ export default class ForceDirectedSignals {
   }
 
   getStatic(opts) {
-    console.log("Allow signal binds", opts.allowSignalBinds); 
     const bind = {
       "input": "checkbox"
     }

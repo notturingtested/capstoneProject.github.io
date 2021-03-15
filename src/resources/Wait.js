@@ -31,4 +31,3 @@ const Wait = props => {
 	return <SpectrumWait {...props} />;
 };
 
-export default Wait;

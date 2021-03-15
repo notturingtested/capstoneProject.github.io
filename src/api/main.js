@@ -1,4 +1,4 @@
-const apiCaller = require('./app.js');
+const apiCaller = require('./APICaller.js');
 
 const apiParser = require('./parser.js');
 
@@ -12,16 +12,14 @@ var temp_company = "OBU Eng SC";
 
 var temp_user = "tschen";
 
-exports.getData = getData; 
+// exports.getData = getData;
 
 // getData(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension, 100);
 // apiCaller.getSeqRequest(temp_token,temp_company,temp_user,temp_dateRange,temp_dimension, "Home", "Home").then(data => console.log(data));
 async function getData(token, company, user, dateRange, dimension, limit) {
-    console.log("Calling getData"); 
     let parser  = new apiParser();
     // Simple request to get the top 10
     let data = await apiCaller.getRequest(token, company, user, dateRange, dimension, limit);
-
     // store the top 10 nodes to JSON, and name and item to map for future use
     parser.parse(data)
 
